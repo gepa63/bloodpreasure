@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name="app_name">Blutdruck</string>
+    <string name="Add">+</string>
+    <string name="action_settings">Einstellungen</string>
+    <string name="title_activity_blood_preasure_edit">Blutdruck bearbeiten</string>
+    <string name="label_Datum">Datum:</string>
+    <string name="pick_time">...</string>
+    <string name="label_Uhrzeit">Uhrzeit:</string>
+    <string name="label_Systolisch">Systolisch:</string>
+    <string name="label_Diastolisch">Diastolisch:</string>
+    <string name="label_Puls">Puls:</string>
+    <string name="label_Description">Bemerkung:</string>
+    <string name="Save">Upload</string>
+    <string name="headerDatum">Datum</string>
+    <string name="headerSyst">Syst.</string>
+    <string name="headerDiast">Diast.</string>
+    <string name="headerPuls">Puls</string>
+    <string name="Apply">Übernehmen</string>
+    <string name="title_activity_blood_preasure_settings">Einstellungen</string>
+    <string name="label_mmHg">mm Hg</string>
+    <string name="threepoints">...</string>
+    
+    
+    <string name="menu_edit">Bearbeiten</string>
+    <string name="menu_del">Löschen</string>
+    <string name="menu_refresh">Neu laden</string>
+    <string name="taglistTitle">Tags</string>
+    <string name="label_Tags">Tags:</string>
+    <string name="spin">XXX</string>
+    <string name="action_settings_save">Einstellung exportieren</string>
+    <string name="action_settings_imp">Einstellung importieren</string>
+    <string name="action_backup_data">Daten sichern</string>
+    <string name="action_restore_data">Daten wiederherstellen</string>
+    <string name="action_import_tensoval">TENSOVAL importieren</string>
+    <string name="title_activity_blood_preasure_info">Blutdruck Infos</string>
+    <string name="txtLocalFile">Lokale Datei</string>
+    <string name="txtUrl">URL</string>
+
+    <string name="title_activity_blood_preasure_Export">Export</string>
+    <string name="title_activity_blood_preasure_Import">Import</string>
+    <string name="label_Filename">Dateiname:</string>
+    <string name="action_app_info">App-Info</string>
+    <string name="action_app_analyze">Body Analyse</string>
+    <string name="label_TensovalPersonIndex">Index für TENSOVAL Person (1|2)</string>
+    <string name="txtPrintBloodPreasureList">Blutdruckliste</string>
+    <string name="txtPrintBloodPreasureAnalyze">Analyse drucken</string>
+    <string name="txtPrintBloodPreasureChart">Chart drucken</string>
+    <string name="title_activity_blood_preasure_Print">Blutdruckwerte drucken</string>
+    <string name="menu_print">PDF-Export</string>
+    <string name="txtDeviceNameTensovalDuo">TENSOVAL Duo (I+II)</string>
+    <string name="txtDeviceOther">Andere</string>
+    <string name="txtPrintBloodPreasureListDetails">Blutdruckliste mit Details</string>
+    <string name="medName">Name:</string>
+    <string name="medShortName">Kürzel:</string>
+    <string name="medType">Art:</string>
+    <string name="medQuantity">Menge:</string>
+    <string name="labelMedicationQuantityTaking">Einnahme:</string>
+    <string name="action_settingsmed_add">Add</string>
+    <string name="removeMed">Del</string>
+    <string name="action_settingsmed_cancel">Abbruch</string>
+    <string name="action_cache_as_datasource">Cache als Datenquelle speichern</string>
+    
+
+</resources>

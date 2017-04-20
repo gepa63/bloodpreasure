@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android" >
+
+    <item
+        android:id="@+id/action_settingsmed_add"
+        android:orderInCategory="10"
+        android:showAsAction="always"
+        android:title="@string/action_settingsmed_add"/>
+    
+    <item
+        android:id="@+id/action_settingsmed_cancel"
+        android:orderInCategory="11"
+        android:showAsAction="always"
+        android:title="@string/action_settingsmed_cancel"/>
+    
+</menu>

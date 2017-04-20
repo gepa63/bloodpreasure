@@ -1,0 +1,11 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="at.gepa.androidlib.cfg.template.ui" >
+
+    <item
+        android:id="@+id/action_apply"
+        android:orderInCategory="10"
+        android:showAsAction="ifRoom"
+        android:title="@string/Apply"/>
+
+</menu>

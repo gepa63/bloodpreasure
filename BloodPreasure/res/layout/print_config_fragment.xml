@@ -1,0 +1,47 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="at.gepa.androidlib.cfg.template.ui.EditFragment" >
+
+	<CheckBox
+	    android:id="@+id/cbPrintBloodPreasureList"
+	    android:layout_marginLeft="40dp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/cbPrintBloodPreasureListDetails"
+	    android:text="@string/txtPrintBloodPreasureList"
+	    android:textSize="32sp" />
+	<CheckBox
+	    android:id="@+id/cbPrintBloodPreasureListDetails"
+	    android:layout_marginLeft="40dp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_above="@+id/cbPrintBloodPreasureAnalyze"
+	    android:text="@string/txtPrintBloodPreasureListDetails"
+	    android:textSize="32sp" />
+    
+	
+    <CheckBox
+        android:id="@+id/cbPrintBloodPreasureAnalyze"
+        android:layout_marginLeft="40dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="@string/txtPrintBloodPreasureAnalyze"
+        android:textSize="32sp" />
+
+	<CheckBox
+	    android:id="@+id/cbPrintBloodPreasureChart"
+        android:layout_marginLeft="40dp"
+	    android:layout_width="wrap_content"
+	    android:layout_height="wrap_content"
+	    android:layout_below="@+id/cbPrintBloodPreasureAnalyze"
+	    android:text="@string/txtPrintBloodPreasureChart"
+	    android:textSize="32sp" />
+	
+</RelativeLayout>

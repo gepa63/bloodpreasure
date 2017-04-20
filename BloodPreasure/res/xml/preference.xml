@@ -1,0 +1,246 @@
+<?xml version="1.0" encoding="utf-8"?>
+<PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
+
+	<PreferenceScreen
+        android:key="btPrefLocalFileScreen"
+        android:title="Lokale Datei"
+        android:persistent="false">
+    	<PreferenceCategory
+		    android:title="Lokale Datei"
+	        android:persistent="false">
+	        
+	    	<CheckBoxPreference 
+			    android:key="prefUseLocalFile"
+			    android:id="@+id/cbUseLocalFile"
+			    android:title="Lokale Datei verwenden"
+	    	    />
+	    	<at.gepa.bloodpreasure.pref.FileChoosePreference 
+		    	android:key="prefFilename"
+		    	android:title="Dateiname"
+		    	android:defaultValue="bloodvalues.csv"
+	    	    >
+	   		</at.gepa.bloodpreasure.pref.FileChoosePreference>
+		</PreferenceCategory>
+	</PreferenceScreen>	
+    
+	<PreferenceScreen
+        android:key="btPrefFTPScreen"
+        android:title="FTP Einstellungen"
+        android:persistent="false">
+		<PreferenceCategory
+	    	android:title="FTP Server Link">
+	    	<CheckBoxPreference 
+			    android:key="prefUseFTPServer"
+			    android:title="FTP verwenden"
+			    android:id="@+id/cbUseFTPServer"
+	    	    />
+			<EditTextPreference 
+			    android:key="prefLink"
+			    android:title="FTP Link"
+			    android:inputType="text"
+			    android:selectAllOnFocus="true"
+			    android:defaultValue=""
+			    />
+			<EditTextPreference 
+			    android:key="prefFTPFilename"
+			    android:title="FTP Dateiname"
+			    android:selectAllOnFocus="true"
+			    android:inputType="text"
+			    android:defaultValue="bloodvalues.csv"
+			    />
+			<EditTextPreference 
+			    android:key="prefFTP_Port"
+			    android:inputType="text"
+			    android:selectAllOnFocus="true"
+			    android:title="FTP Port"
+			    android:defaultValue="21"
+			    />
+	
+	    </PreferenceCategory>    
+    
+		<PreferenceCategory android:title="Benutzer Anmeldung">
+			<EditTextPreference 
+			    android:key="prefUser"
+			    android:title="Benutzername"
+			    android:selectAllOnFocus="true"
+			    android:defaultValue=""
+			    />
+			<EditTextPreference 
+			    android:key="prefPwd"
+			    android:inputType="textPassword"
+			    android:password="true"
+			    android:selectAllOnFocus="true"
+			    android:title="Benutzer Passwort"
+			    android:defaultValue=""
+			    />
+	    </PreferenceCategory>
+				
+		<PreferenceCategory
+	    	android:title="Cloud Zugriff"
+	    	android:shouldDisableView="true"
+	    	android:key="prefCatCloud"
+	    	android:summary="Für den Zugriff auf Amazon S3/ Amazon CloudFront und Google Storage Service">
+	    	
+			<EditTextPreference 
+			    android:key="prefCloud_Key"
+			    android:title="Cloud Key"
+			    android:selectAllOnFocus="true"
+			    android:inputType="text"
+			    android:defaultValue=""
+			    />
+			<EditTextPreference 
+			    android:key="prefCloud_Sec"
+			    android:inputType="text"
+			    android:selectAllOnFocus="true"
+			    android:title="Cloud Sicherheits Schlüssel"
+			    android:defaultValue="21"
+			    />
+	
+			<EditTextPreference 
+			    android:key="prefCloud_Bucket"
+			    android:title="Cloud Bucket"
+			    android:selectAllOnFocus="true"
+			    android:defaultValue="bloodvalues.csv"
+			    />
+	    </PreferenceCategory>
+	    
+	</PreferenceScreen>		
+
+	<PreferenceScreen
+        android:key="btPrefDatabaseScreen"
+        android:title="Lokale Datenbank"
+        android:persistent="false">
+    	<PreferenceCategory
+		    android:title="Lokale Datenbank"
+	        android:persistent="false">
+	        
+	    	<CheckBoxPreference 
+			    android:key="prefUseLocalDatabase"
+			    android:id="@+id/cbUseLocalDatabase"
+			    android:title="Lokale Datenbank verwenden"
+	    	    />
+	    	<EditTextPreference
+		    	android:key="prefLocalDatabaseName"
+		    	android:title="DB-Name"
+		    	android:selectAllOnFocus="true"
+		    	android:defaultValue="bloodpreasure.db"
+	    	    >
+	   		</EditTextPreference>
+	    	<EditTextPreference
+		    	android:key="prefTableName"
+		    	android:title="Table-Name"
+		    	android:selectAllOnFocus="true"
+		    	android:defaultValue="bloodpreasure"
+	    	    >
+	   		</EditTextPreference>
+		</PreferenceCategory>
+	</PreferenceScreen>	
+		
+	<PreferenceScreen
+        android:key="btPrefChartConfig"
+        android:title="Chart Konfiguration"
+        android:persistent="false">
+	    <PreferenceCategory android:title="Chart Linien">
+			<CheckBoxPreference 
+			    android:key="pref_PrintSystolisch"
+			    android:title="Systolische Werte anzeigen"
+			    android:defaultValue="true"
+			    />
+			<CheckBoxPreference 
+			    android:key="pref_PrintDiastolisch"
+			    android:title="Diastolische Werte anzeigen"
+			    android:defaultValue="true"
+			    />
+			<CheckBoxPreference 
+			    android:key="pref_PrintPluls"
+			    android:title="Puls anzeigen"
+			    android:defaultValue="true"
+			    />
+			<CheckBoxPreference 
+			    android:key="pref_PrintGewicht"
+			    android:title="Gewicht anzeigen"
+			    android:defaultValue="false"
+			    />
+			<CheckBoxPreference 
+			    android:key="pref_PrintZucker"
+			    android:title="Blutzucker anzeigen"
+			    android:defaultValue="false"
+			    />
+			<CheckBoxPreference 
+			    android:key="pref_PrintTemp"
+			    android:title="Temperatur anzeigen"
+			    android:defaultValue="false"
+			    />
+		</PreferenceCategory>	        
+	    <PreferenceCategory android:title="Filter">
+			<at.gepa.bloodpreasure.pref.DatePreference
+		    	android:key="dod" 
+		    	android:title="Chart Datum Filter"
+		    	android:defaultValue="2015-08-01" />
+			<CheckBoxPreference 
+			    android:key="pref_AlignQuarters"
+			    android:title="Messzeit an 1/4 Stunden auf/abrunden"
+			    android:defaultValue="true"
+			    />
+	    </PreferenceCategory>
+    </PreferenceScreen>
+    
+	<PreferenceCategory android:title="Import">
+		<EditTextPreference 
+		    android:key="pref_TensovalPerson"
+		    android:selectAllOnFocus="true"
+		    android:title="Index für TENSOVAL Person (1|2) Import"
+		    android:defaultValue="1">
+		</EditTextPreference>
+	</PreferenceCategory>
+		    
+	<PreferenceCategory android:title="Analyse Angaben">
+	    <CheckBoxPreference 
+	        android:key="showAnalyze"
+		    android:title="Analyse am Hauptschirm anzeigen"/>
+		<at.gepa.bloodpreasure.pref.DatePreference
+		    android:key="pref_Birthday"
+		    android:title="Geburtstag"
+		    android:defaultValue="1980.01.01"
+		    />
+		<ListPreference
+		android:key="pref_Geschlecht"
+		android:title="Geschlecht"
+		android:summary=""
+		android:defaultValue="Männlich"
+		android:entries="@array/genderList"
+		android:entryValues="@array/genderList" />
+		
+		<EditTextPreference 
+		    android:key="pref_Gewicht"
+			android:selectAllOnFocus="true"
+		    android:title="Gewicht (kg)"
+		    />
+		<EditTextPreference 
+		    android:key="pref_Groesse"
+		    android:selectAllOnFocus="true"
+		    android:title="Körpergröße (cm)"
+		/>
+		<EditTextPreference 
+		    android:key="pref_Taile"
+		    android:selectAllOnFocus="true"
+		    android:title="Taile (cm)"
+		/>
+		<EditTextPreference 
+		    android:key="pref_Huefte"
+		    android:selectAllOnFocus="true"
+		    android:title="Hüfte (cm)"
+		/>
+		<at.gepa.bloodpreasure.medicine.MedicationPreference
+	    	android:key="prefMedicationDlg" 
+	    	android:title="Medikation am Tag"
+	   	/>
+<!-- 				
+		<EditTextPreference 
+		    android:key="prefMedication"
+		    android:title="Medikation"
+		    android:defaultValue=""
+		    />
+ -->		    
+    </PreferenceCategory>
+</PreferenceScreen>

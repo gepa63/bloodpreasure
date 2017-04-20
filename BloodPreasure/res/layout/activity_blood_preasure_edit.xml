@@ -1,0 +1,208 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    android:background="@xml/background_editdlg"
+    tools:context="at.gepa.bloodpreasure.ui.BloodPreasureEditActivity_SinglePage" >
+
+    <LinearLayout
+        android:id="@+id/lDatum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_Datum" />
+
+    	<EditText
+    		android:id="@+id/txDatum"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:hint="tt.mm.jjjj"
+    		android:textSize="@dimen/font_size"
+    		android:inputType="date|textAutoCorrect" />
+    	
+	</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lUhrzeit"
+        android:layout_below="@id/lDatum"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_Uhrzeit" />
+
+    	<EditText
+    		android:id="@+id/txUhrzeit"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:hint="hh:mm"
+    		android:textSize="@dimen/font_size"
+    		android:inputType="time|textAutoComplete" />
+    	
+	</LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lSystolisch"
+        android:layout_below="@id/lUhrzeit"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_Systolisch" />
+
+    	<EditText
+    		android:id="@+id/txSystolisch"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:textSize="@dimen/font_size"
+    		android:inputType="text|numberSigned" />
+    	<TextView
+        android:layout_width="26dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_mmHg" />
+    		
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lDiastolisch"
+        android:layout_below="@id/lSystolisch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_Diastolisch" />
+
+    	<EditText
+    		android:id="@+id/txDiastolisch"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:textSize="@dimen/font_size"
+    		android:inputType="text|numberSigned" />
+    	<TextView
+        android:layout_width="26dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_mmHg" />
+    	
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/lPuls"
+        android:layout_below="@id/lDiastolisch"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_Puls" />
+
+    	<EditText
+    		android:id="@+id/txPuls"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:textSize="@dimen/font_size"
+    		android:inputType="text|numberSigned" />
+    	<TextView
+	        android:layout_width="26dip"
+	        android:layout_height="wrap_content"
+	        android:text="@string/label_mmHg" />
+    		
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/lTags"
+        android:layout_below="@id/lPuls"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+    	android:id = "@+id/label_StartTagActivity"
+        android:layout_width="80dip"
+        android:layout_gravity="center_vertical|start"
+        android:textStyle="bold"
+        android:layout_height="wrap_content"
+        android:labelFor="@+id/txTags"
+        android:text="@string/label_Tags" />
+
+    	<EditText
+    		android:id="@+id/txTags"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:layout_gravity="start"
+    		android:inputType="text"
+    		android:textSize="@dimen/font_size_small" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/lDescription"
+        android:layout_below="@id/lTags"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+        android:layout_width="80dip"
+        android:layout_height="wrap_content"
+        android:text="@string/label_Description" />
+
+    	<EditText
+    		android:id="@+id/txDescription"
+    		android:layout_width="match_parent"
+    		android:layout_height="wrap_content"
+    		android:textSize="@dimen/font_size"
+    		android:scrollbars="vertical"
+    		android:maxLines="10"
+    		android:inputType="textMultiLine|textAutoComplete" />
+    	
+    </LinearLayout>
+    
+    <LinearLayout
+        android:id="@+id/lbloodpreasureAnalyze"
+        android:layout_below="@id/lDescription"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        
+    	<TextView
+    	android:id="@+id/label_bloodpreasureAnalyze"
+        android:layout_width="match_parent"
+		android:gravity="center"
+		android:textSize="@dimen/font_size"
+        android:layout_height="wrap_content"
+        android:hint="Bludruck Analyse"
+        android:text="" />
+    </LinearLayout>
+    <!-- 
+    <Button
+        android:id="@+id/btSave"
+        android:layout_below="@id/lbloodpreasureAnalyze"
+        android:background="@drawable/button_style"
+        style="@style/button_text"
+        android:layout_marginTop="5dip"
+        android:layout_width="match_parent"
+        android:layout_height="22dip"
+        android:onClick="onSave"
+        android:text="@string/Apply" >
+
+    </Button>
+     -->
+</RelativeLayout>

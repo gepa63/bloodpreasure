@@ -1,0 +1,165 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="at.gepa.bloodpreasure.MainActivityGrid"
+    android:background="@xml/background"
+    tools:ignore="MergeRootFrame" >
+    
+    <android.support.v4.view.ViewPager
+        android:id="@+id/vpPager"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+    </android.support.v4.view.ViewPager>
+
+    <RelativeLayout
+        android:id="@+id/relLayoutButtonBarBottomId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/button"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="18dp"
+            android:layout_marginBottom="80dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="17dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/Add"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:onClick="onClick"
+            android:padding="5dp"
+            android:src="@drawable/plus" />
+
+        <LinearLayout
+            android:id="@+id/avgValues"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentEnd="true"
+            android:layout_marginBottom="-10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="-20dp"
+            android:background="@color/blue_transparent"
+            android:orientation="vertical"
+            android:visibility="visible" >
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            	android:layout_gravity="center_vertical"
+                android:background="@color/blue_transparent"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/img_avg_night"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Durchschnitt Abend"
+            		android:layout_gravity="center_vertical"
+                    android:src="@drawable/moon_small" />
+
+                <TextView
+                    android:id="@+id/label_avg_night"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="6dp"
+                    android:background="@color/blue_transparent"
+                    android:text="0 / 0"
+                    android:textColor="@color/green"
+                    android:textStyle="bold"
+                    android:textSize="@dimen/font_size_small"
+                     />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/blue_transparent"
+            	android:layout_gravity="center_vertical"
+                android:orientation="horizontal" >
+
+                <ImageView
+                    android:id="@+id/img_avg_day"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:contentDescription="Durchschnitt Tag"
+            		android:layout_gravity="center_vertical"
+                    android:src="@drawable/sun_small" />
+
+                <TextView
+                    android:id="@+id/label_avg_day"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="6dp"
+                    android:layout_weight="1"
+                    android:background="@color/blue_transparent"
+                    android:textColor="@color/green"
+                    android:textStyle="bold"
+                    android:text="0 / 0"
+                    android:textSize="@dimen/font_size_small" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+            	android:layout_gravity="center_vertical"
+                android:background="@color/blue_transparent"
+                android:orientation="horizontal" >
+
+                <TextView
+                    android:id="@+id/label_avg"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="30dp"
+                    android:layout_weight="1.31"
+                    android:background="@color/blue_transparent"
+                    android:textColor="@color/green"
+                    android:textStyle="bold"
+                    android:text="0 / 0"
+                    android:textSize="@dimen/font_size_small" />
+
+            </LinearLayout>
+		    <LinearLayout
+		        android:layout_width="match_parent"
+		        android:layout_height="wrap_content"
+            	android:layout_gravity="center_vertical"
+		        android:orientation="horizontal" >
+		
+		        <TextView
+		            android:id="@+id/label_tendenz"
+		            android:layout_width="0dp"
+		            android:layout_height="wrap_content"
+		            android:layout_marginStart="0dp"
+		            android:layout_marginEnd="10dp"
+		            android:layout_weight="1.5"
+		            android:textColor="@color/green"
+		            android:textStyle="bold"
+		            android:text="schlechter"
+		            android:layout_gravity="end"
+		            android:textSize="@dimen/font_size_small" />
+                <ImageView
+                    android:id="@+id/tendenz_image"
+                    android:contentDescription="Tendenz"
+                    android:src="@drawable/daumen_neutral_small"
+                    android:layout_width="wrap_content"
+                    android:layout_gravity="center_vertical"
+                    android:layout_height="wrap_content"/>
+		        		
+		    </LinearLayout>
+            
+        </LinearLayout>
+
+    </RelativeLayout>
+    	
+</FrameLayout>
+

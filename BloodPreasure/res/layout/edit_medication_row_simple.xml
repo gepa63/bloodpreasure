@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical" 
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@xml/background_editdlg"
+    >
+
+	<LinearLayout android:orientation="horizontal" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+   		android:gravity="center_vertical|start"
+    	android:layout_margin="4dp"
+        >
+        <TextView
+            android:id="@+id/labelMedikamentFull"  
+    		android:layout_width="wrap_content"
+    		android:layout_weight="1"
+    		android:textSize="30sp"
+    		android:gravity="center_vertical|start"
+    		android:layout_height="wrap_content"
+            >
+        </TextView>
+        <ImageButton 
+            android:id="@+id/txtButtonEditMed"  
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="@string/threepoints"
+    		android:contentDescription="@string/threepoints"
+    		android:layout_weight="0"
+            />
+        <ImageButton 
+            android:id="@+id/txtButtonDelMed"  
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="@string/removeMed"
+    		android:contentDescription="@string/removeMed"
+    		android:layout_weight="0"
+            />
+	</LinearLayout>
+
+</LinearLayout>

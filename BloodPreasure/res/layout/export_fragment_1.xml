@@ -1,0 +1,40 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:paddingBottom="@dimen/activity_vertical_margin"
+    android:paddingLeft="@dimen/activity_horizontal_margin"
+    android:paddingRight="@dimen/activity_horizontal_margin"
+    android:paddingTop="@dimen/activity_vertical_margin"
+    tools:context="at.gepa.androidlib.cfg.template.ui.EditFragment" >
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentTop="false"
+        android:layout_centerHorizontal="false"
+        android:layout_centerInParent="true"
+        android:layout_centerVertical="false"
+        android:layout_gravity="center_vertical|center_horizontal"
+        android:gravity="center_vertical|fill_vertical|center_horizontal|fill_horizontal|center"
+        android:orientation="vertical"
+        android:showDividers="middle" >
+
+        <RadioButton
+            android:id="@+id/export_import_localFileId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_weight="1"
+            android:textSize="32sp"
+            android:text="@string/txtLocalFile" />
+
+        <RadioButton
+            android:id="@+id/export_import_UrlId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:layout_weight="1"
+            android:text="@string/txtUrl" />
+    </RadioGroup>
+    
+</RelativeLayout>

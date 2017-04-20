@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+     xmlns:android="http://schemas.android.com/apk/res/android"
+     android:layout_width="fill_parent"
+     android:layout_height="wrap_content"
+     android:orientation="horizontal">
+ 
+     <TextView
+         android:layout_height="wrap_content"
+         android:layout_width="10dip"
+         android:textSize="@dimen/font_size"
+         android:textStyle="bold"
+         android:text="" />
+    <TextView
+         android:layout_height="wrap_content"
+         android:layout_width="160dip"
+         android:textSize="@dimen/font_size"
+         android:textStyle="bold"
+         android:text="@string/headerDatum" />
+ 
+     <TextView
+         android:layout_height="wrap_content"
+         android:layout_width="fill_parent"
+         android:layout_weight="1"
+         android:textStyle="bold"
+         android:textSize="@dimen/font_size"
+         android:text="@string/headerSyst" />
+
+     <TextView
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+         android:textStyle="bold"
+         android:textSize="@dimen/font_size"
+         android:text="@string/headerDiast" />
+     
+     <TextView
+         android:layout_width="fill_parent"
+         android:layout_height="wrap_content"
+         android:layout_weight="1"
+         android:textStyle="bold"
+         android:textSize="@dimen/font_size"
+         android:text="@string/headerPuls" />
+</LinearLayout>

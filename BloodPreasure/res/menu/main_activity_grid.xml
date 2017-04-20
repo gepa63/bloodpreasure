@@ -1,0 +1,59 @@
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:context="at.gepa.bloodpreasure.MainActivityGrid" >
+
+    <item
+        android:id="@+id/action_add_bloodpreasure_value"
+        android:orderInCategory="1"
+        android:icon="@drawable/plus"
+        android:title="@string/Add"
+        android:showAsAction="ifRoom" />
+    <item
+        android:id="@+id/action_save_bloodpreasures"
+        android:orderInCategory="20"
+        android:icon="@drawable/upload_big"
+        android:title="@string/Save"
+        android:showAsAction="ifRoom" />
+    
+    <item
+        android:id="@+id/action_app_info"
+        android:orderInCategory="50"
+        android:showAsAction="never"
+        android:title="@string/action_app_info"/>
+    <item
+        android:id="@+id/action_settings"
+        android:orderInCategory="60"
+        android:showAsAction="never"
+        android:title="@string/action_settings"/>
+    <item
+        android:id="@+id/action_app_analyze"
+        android:orderInCategory="70"
+        android:showAsAction="never"
+        android:title="@string/action_app_analyze"/>
+    <item
+        android:id="@+id/action_refresh"
+        android:orderInCategory="80"
+        android:showAsAction="ifRoom"
+        android:title="@string/menu_refresh"/>
+    <item
+        android:id="@+id/action_print"
+        android:orderInCategory="100"
+        android:showAsAction="never"
+        android:title="@string/menu_print"/>
+    
+    <item
+        android:id="@+id/action_backup_data"
+        android:orderInCategory="110"
+        android:showAsAction="never"
+        android:title="@string/action_backup_data"/>
+    <item
+        android:id="@+id/action_restore_data"
+        android:orderInCategory="120"
+        android:showAsAction="never"
+        android:title="@string/action_restore_data"/>
+    <item
+        android:id="@+id/action_import_tensovalid"
+        android:orderInCategory="240"
+        android:showAsAction="never"
+        android:title="@string/action_import_tensoval"/>
+</menu>

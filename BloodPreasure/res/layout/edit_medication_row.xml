@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android" 
+    android:orientation="vertical" 
+	android:layout_width="match_parent"
+	android:layout_height="match_parent"
+	android:background="@xml/background_editdlg"
+    >
+
+	<LinearLayout android:orientation="horizontal" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/labelMedName"  
+    		android:layout_width="80dp"
+    		android:layout_weight="0"
+    		android:layout_height="wrap_content"
+    		android:text="@string/medName"
+    		android:labelFor="@+id/txtMedName"
+            >
+        </TextView>
+        <AutoCompleteTextView
+            android:id="@+id/txtMedName"  
+    		android:layout_width="wrap_content"
+    		android:layout_weight="1"
+    		android:inputType="textCapWords"
+    		android:layout_height="wrap_content"
+            >
+        </AutoCompleteTextView>
+        <Button 
+            android:id="@+id/txtButtonMed"  
+    		android:layout_width="wrap_content"
+    		android:layout_height="wrap_content"
+    		android:text="@string/threepoints"
+    		android:layout_weight="0"
+            />
+	</LinearLayout>
+    <LinearLayout android:orientation="horizontal" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/labelMedType"  
+    		android:layout_width="80dp"
+    		android:layout_weight="0"
+    		android:layout_height="wrap_content"
+    		android:text="@string/medType"
+    		android:labelFor="@+id/spinnerMedType"
+            >
+        </TextView>
+        <Spinner
+            android:id="@+id/spinnerMedType"  
+    		android:layout_width="wrap_content"
+    		android:layout_weight="1"
+    		android:layout_height="wrap_content"
+            >
+        </Spinner>
+	</LinearLayout>
+   
+    <LinearLayout android:orientation="horizontal" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/labelMedQuantity"  
+    		android:layout_width="80dp"
+    		android:layout_weight="0"
+    		android:layout_height="wrap_content"
+    		android:text="@string/medQuantity"
+    		android:labelFor="@+id/txtMedQuantity"
+            >
+        </TextView>
+        <EditText
+            android:id="@+id/txtMedQuantity"  
+    		android:layout_width="wrap_content"
+    		android:layout_weight="1"
+    		android:inputType="numberDecimal"
+    		android:layout_height="wrap_content"
+            >
+        </EditText>
+        <EditText
+            android:id="@+id/txtMedQuantityUnit"  
+    		android:layout_width="wrap_content"
+    		android:layout_weight="1"
+    		android:layout_height="wrap_content"
+            >
+        </EditText>
+	</LinearLayout>
+	
+	<LinearLayout android:orientation="horizontal" 
+    	android:layout_width="match_parent"
+    	android:layout_height="wrap_content"
+        >
+        <TextView
+            android:id="@+id/labelMedicationQuantityTakingId"  
+    		android:layout_width="80dp"
+    		android:layout_weight="0"
+    		android:layout_height="wrap_content"
+    		android:text="@string/labelMedicationQuantityTaking"
+    		android:labelFor="@+id/txtMedShortName"
+            >
+        </TextView>
+        <Spinner
+            android:id="@+id/medicationQuantityTakingId"  
+    		android:layout_width="wrap_content"
+    		android:layout_weight="1"
+    		android:inputType="textCapCharacters"
+    		android:layout_height="wrap_content"
+            >
+        </Spinner>
+	</LinearLayout>
+</LinearLayout>

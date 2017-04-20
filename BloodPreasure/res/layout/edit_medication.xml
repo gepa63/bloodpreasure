@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+    <LinearLayout
+        xmlns:android="http://schemas.android.com/apk/res/android" 
+        android:orientation="vertical" 
+    	android:layout_width="match_parent"
+    	android:layout_height="match_parent"
+    	android:background="@xml/background_editdlg"
+        >
+		<ListView android:id="@+id/medicineListViewId" 
+		    android:layout_width="match_parent"
+		    android:layout_height="match_parent">
+		</ListView>
+		
+    <RelativeLayout
+        android:id="@+id/relLayoutButtonMedAddId"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="bottom|end"
+        android:layout_marginBottom="20dp"
+        android:orientation="horizontal" >
+
+        <ImageButton
+            android:id="@+id/buttonMedAddId"
+            android:layout_width="80dp"
+            android:layout_height="80dp"
+            android:layout_margin="18dp"
+            android:layout_marginBottom="80dp"
+            android:layout_marginEnd="80dp"
+            android:layout_marginStart="17dp"
+            android:layout_gravity="center_vertical"
+            android:background="@drawable/round_button"
+            android:contentDescription="@string/Add"
+            android:layout_alignParentBottom="true"
+            android:layout_alignParentStart="true"
+            android:onClick="onClick"
+            android:padding="5dp"
+            android:src="@drawable/plus" />
+	</RelativeLayout>		
+</LinearLayout>

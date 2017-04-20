@@ -1,0 +1,18 @@
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/container"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="at.gepa.bloodpreasure.MainActivityGrid"
+    android:background="@xml/background"
+    
+    tools:ignore="MergeRootFrame" >
+    
+	<ListView android:id="@+id/listBloodPreasureInfoGridId" 
+	    android:layout_width="match_parent"
+	    android:layout_margin="4dp"
+	    android:choiceMode="singleChoice"
+	    android:layout_height="match_parent">
+	</ListView>
+</FrameLayout>
+

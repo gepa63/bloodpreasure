@@ -42,6 +42,13 @@
 			    android:defaultValue=""
 			    />
 			<EditTextPreference 
+			    android:key="prefSubFolder"
+			    android:title="FTP Subfolder"
+			    android:inputType="text"
+			    android:selectAllOnFocus="true"
+			    android:defaultValue="bp"
+			    />
+			<EditTextPreference 
 			    android:key="prefFTPFilename"
 			    android:title="FTP Dateiname"
 			    android:selectAllOnFocus="true"

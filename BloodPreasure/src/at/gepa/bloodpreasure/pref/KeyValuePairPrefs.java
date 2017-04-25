@@ -4,8 +4,10 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
+import java.util.List;
 
 import at.gepa.net.FileStreamAccess;
 import at.gepa.net.IElement;
@@ -97,6 +99,12 @@ public class KeyValuePairPrefs {
 		@Override
 		public String getPrefix(int page) {
 			return null;
+		}
+		@Override
+		public List<String> getKeyList() {
+			ArrayList<String> ret = new ArrayList<String>();
+			ret.add(key);
+			return ret;
 		}
 		
 	}

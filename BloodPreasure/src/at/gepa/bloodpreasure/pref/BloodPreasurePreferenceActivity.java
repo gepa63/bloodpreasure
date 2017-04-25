@@ -46,6 +46,7 @@ implements OnSharedPreferenceChangeListener
 {
 	public static final String KEY_DATEFILTER = "dod";
 	public static final String KEY_LINK = "prefLink";
+	public static final String KEY_SUBFOLDER = "prefSubFolder";
 	public static final String KEY_FTPPORT = "prefFTP_Port";
 	public static final String KEY_FTPFILENAME = "prefFTPFilename";
 	
@@ -102,7 +103,7 @@ implements OnSharedPreferenceChangeListener
 	    {
 	        super.onCreate(savedInstanceState);
 	        
-	        setTextPrefs = new String []{ KEY_FILENAME, KEY_FTPFILENAME, KEY_FTPPORT, KEY_USER, KEY_GEWICHT, KEY_TAILE, KEY_HUEFTE, KEY_GROESSE, KEY_MEDICATION, KEY_PWD, KEY_LINK, KEY_GESCHLECHT, KEY_TENSOVAL_PERSON};
+	        setTextPrefs = new String []{ KEY_FILENAME, KEY_FTPFILENAME, KEY_SUBFOLDER, KEY_FTPPORT, KEY_USER, KEY_GEWICHT, KEY_TAILE, KEY_HUEFTE, KEY_GROESSE, KEY_MEDICATION, KEY_PWD, KEY_LINK, KEY_GESCHLECHT, KEY_TENSOVAL_PERSON};
 	        
 	        try 
 	        {
@@ -228,7 +229,7 @@ implements OnSharedPreferenceChangeListener
 				{
 					PreferenceCategory lol = (PreferenceCategory) o;
 					//We do not use Cloude Interface, so remove it for now
-					boolean b = ( lol.getKey() != null && lol.getKey().equals("prefCatCloud") );
+					boolean b = ( lol.getKey() != null && (lol.getKey().equals("prefCatCloud") || lol.getKey().equals("btPrefDatabaseScreen") ) );
 					if( b )
 						screen.removePreference(lol);
 					else
@@ -469,6 +470,7 @@ implements OnSharedPreferenceChangeListener
 	private String ftpLink;
 	private String pwd;
 	private String username;
+	private String subFolder;
 //	private String cloudKey;
 //	private String cloudSecKey;
 //	private String cloudBucket;
@@ -633,6 +635,7 @@ implements OnSharedPreferenceChangeListener
 			boolean isLocalFile = MainActivityGrid.getDataAccess().isLocalFileActive();
 			
 			setIfNotExists( mySharedPreferences, edit, KEY_LINK, MainActivityGrid.getDataAccess().getFtpLink() );
+			setIfNotExists( mySharedPreferences, edit, KEY_SUBFOLDER, MainActivityGrid.getDataAccess().getSubFolder() );
 			
 			setIfNotExists( mySharedPreferences, edit, KEY_FTPFILENAME, MainActivityGrid.getDataAccess().getFtpFileName() );
 			setIfNotExists( mySharedPreferences, edit, KEY_FILENAME, MainActivityGrid.getDataAccess().getBaseFileName() );
@@ -744,6 +747,8 @@ implements OnSharedPreferenceChangeListener
 				onSharedPreferenceChanged(mySharedPreferences, KEY_LINK);
 			if( port == 0 )
 				onSharedPreferenceChanged(mySharedPreferences, KEY_FTPPORT);
+			if( subFolder == null )
+				onSharedPreferenceChanged(mySharedPreferences, KEY_SUBFOLDER);
 			
 			if( !configured )
 			{
@@ -753,7 +758,11 @@ implements OnSharedPreferenceChangeListener
 					editor.putString(KEY_FTPFILENAME, filename );
 				}
 				else
+				{
 					editor.putString(KEY_FILENAME, filename );
+					subFolder = "";
+				}
+				editor.putString(KEY_SUBFOLDER, subFolder );
 				editor.commit();
 			}
 			if( !useLocalFile && !useFTPServer )
@@ -786,11 +795,14 @@ implements OnSharedPreferenceChangeListener
 			}
 			else
 			{
+				String sf = "";
+				if( useFTPServer )
+					sf = this.subFolder;
 				da = DataAccess.createInstance( this.filename, 
 						this.username, 
 						this.pwd, 
 						this.ftpLink, 
-						"", //subpath, 
+						sf, //subpath, 
 						this.port );
 			}
 			try {
@@ -899,6 +911,14 @@ implements OnSharedPreferenceChangeListener
 					MainActivityGrid.getDataAccess() == null ? BloodPreasure.DEFAULT_FTP_FILENAME() :
 					MainActivityGrid.getDataAccess().getFtpFileName() );
 			}
+		}
+		if( key.equals(KEY_SUBFOLDER))
+		{
+			needReload = true;
+			this.subFolder = sharedPreferences.getString(KEY_SUBFOLDER,
+				MainActivityGrid.getDataAccess() == null ? BloodPreasure.DEFAULT_SUBFOLDER() :
+				MainActivityGrid.getDataAccess().getSubFolder() );
+			
 		}
 		
 		if( key.startsWith("pref_Print") )
@@ -1048,14 +1068,17 @@ implements OnSharedPreferenceChangeListener
 			boolean useFTPServer = mySharedPreferences.getBoolean(KEY_USE_FTPSERVER, false);
 			
 			String fname = mySharedPreferences.getString(KEY_FILENAME, BloodPreasure.DEFAULT_FILENAME() );
+			String subFolder = "";
 			if( useFTPServer )
+			{
 				fname = mySharedPreferences.getString(KEY_FTPFILENAME, BloodPreasure.DEFAULT_FTP_FILENAME());
-			
+				subFolder = mySharedPreferences.getString(KEY_SUBFOLDER, BloodPreasure.DEFAULT_SUBFOLDER() );
+			}
 			DataAccess d = DataAccess.createInstance( fname, 
 					mySharedPreferences.getString(KEY_USER, "" ), 
 					mySharedPreferences.getString(KEY_PWD, "" ), 
 					mySharedPreferences.getString(KEY_LINK, "" ), 
-					"", //subpath, 
+					subFolder, //subpath, 
 					Integer.parseInt(mySharedPreferences.getString(KEY_FTPPORT, "" )), 
 					mySharedPreferences.getString(KEY_CLOUD_KEY, "" ), 
 					mySharedPreferences.getString(KEY_CLOUD_SEC, "" ), 
@@ -1069,6 +1092,7 @@ implements OnSharedPreferenceChangeListener
 		}
 	}
 
+	
 //	public static Calendar getBirthday() {
 //		Calendar cal = Calendar.getInstance();
 //		DatePreference p = (DatePreference)new MyPreferenceFragment().getPreferenceManager().findPreference(KEY_BIRTHDAY);

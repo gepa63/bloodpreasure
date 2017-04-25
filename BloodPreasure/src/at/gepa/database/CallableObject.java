@@ -46,7 +46,11 @@ public abstract class CallableObject extends HashMap<String, Object> {
 	}
 
 	public void setFromElement(IElement element) {
-		
+	
+		for( String key : element.getKeyList() )
+		{
+			put(key, element.get(key));
+		}
 	}
 
 

@@ -153,6 +153,6 @@ public class BloodPreasureModel implements IModel {
 
 	@Override
 	public boolean isLineToProceed(String line, String fieldDelim) {
-		return !line.isEmpty() && line.contains(fieldDelim);
+		return !line.isEmpty() && (fieldDelim == null || line.contains(fieldDelim));
 	}
 }

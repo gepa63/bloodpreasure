@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -24,6 +25,8 @@ import android.preference.PreferenceScreen;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
+import at.azure.DataAccessAndroid;
+import at.azure.DataAccessAzureAndroidController;
 import at.gepa.androidlib.security.PasswordEncryptionDecryption;
 import at.gepa.bloodpreasure.ChartFragment;
 import at.gepa.bloodpreasure.MainActivityGrid;
@@ -37,6 +40,7 @@ import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
 import at.gepa.lib.tools.Util;
 import at.gepa.net.DataAccess;
+import at.gepa.net.DataAccessController;
 import at.gepa.net.IElement;
 
 
@@ -57,6 +61,11 @@ implements OnSharedPreferenceChangeListener
 	public static final String KEY_FILENAME = "prefFilename";
 	public static final String KEY_USER = "prefUser";
 	public static final String KEY_PWD = "prefPwd";
+	
+	public static final String KEY_AZURE_ACCOUNT = "prefAzureAccount";
+	public static final String KEY_AZURE_KEY = "prefAzureKey";
+	public static final String KEY_AZURE_CONTAINER = "prefAzureContainer";
+	
 	
 	public static final String KEY_BIRTHDAY = "pref_Birthday";
 	
@@ -81,6 +90,7 @@ implements OnSharedPreferenceChangeListener
 	
 	public static final String KEY_USE_FTPSERVER = "prefUseFTPServer";
 	public static final String KEY_USE_LOCALFILE = "prefUseLocalFile";
+	public static final String KEY_USE_AZUREFILE = "prefUseAzureFile";
 	
 	private static final String KEY_PRINTCONFIG_ANALYZE = "pref_PrintConfig_Analyze";
 	private static final String KEY_PRINTCONFIG_CHART = "pref_PrintConfig_Chart";
@@ -94,7 +104,9 @@ implements OnSharedPreferenceChangeListener
 	{
 	    private CheckBoxPreference prefUseLocalFile;
 	    private CheckBoxPreference prefUseFTPServer;
+	    private CheckBoxPreference prefUseAzure;
 	    private PreferenceScreen btPrefFTPScreen;
+	    private PreferenceScreen btPrefAzureFileScreen;
 	    private PreferenceScreen btPrefLocalFileScreen;
 
 		private String [] setTextPrefs;
@@ -103,7 +115,9 @@ implements OnSharedPreferenceChangeListener
 	    {
 	        super.onCreate(savedInstanceState);
 	        
-	        setTextPrefs = new String []{ KEY_FILENAME, KEY_FTPFILENAME, KEY_SUBFOLDER, KEY_FTPPORT, KEY_USER, KEY_GEWICHT, KEY_TAILE, KEY_HUEFTE, KEY_GROESSE, KEY_MEDICATION, KEY_PWD, KEY_LINK, KEY_GESCHLECHT, KEY_TENSOVAL_PERSON};
+	        setTextPrefs = new String []{ KEY_FILENAME, KEY_FTPFILENAME, KEY_SUBFOLDER,
+	        		KEY_AZURE_ACCOUNT, KEY_AZURE_KEY, KEY_AZURE_CONTAINER,
+	        		KEY_FTPPORT, KEY_USER, KEY_GEWICHT, KEY_TAILE, KEY_HUEFTE, KEY_GROESSE, KEY_MEDICATION, KEY_PWD, KEY_LINK, KEY_GESCHLECHT, KEY_TENSOVAL_PERSON};
 	        
 	        try 
 	        {
@@ -130,6 +144,13 @@ implements OnSharedPreferenceChangeListener
 	        if( da != null && da.isFTPActive() )
 	        {
 	        	updateTextFields( pm, KEY_FTPFILENAME, da.getFtpFileName() );
+	        }
+	        if( da != null && da.isAzureActive() )
+	        {
+	        	updateTextFields( pm, KEY_FTPFILENAME, da.getFileName() );
+	        	updateTextFields( pm, KEY_AZURE_ACCOUNT, da.getAzureAccount() );
+	        	updateTextFields( pm, KEY_AZURE_KEY, da.getAzureKey() );
+	        	updateTextFields( pm, KEY_AZURE_CONTAINER, da.getAzureContainer() );
 	        }
 	        
 	        doScreen(getPreferenceScreen());
@@ -217,6 +238,8 @@ implements OnSharedPreferenceChangeListener
 				btPrefFTPScreen = screen;
 			else if( screen.getKey() != null && screen.getKey().equals("btPrefLocalFileScreen") )
 				btPrefLocalFileScreen = screen;
+			else if( screen.getKey() != null && screen.getKey().equals("btPrefAzureFileScreen") )
+				btPrefAzureFileScreen = screen;
 			
 			for(int x = 0; x < screen.getPreferenceCount(); x++)
 			{
@@ -229,7 +252,7 @@ implements OnSharedPreferenceChangeListener
 				{
 					PreferenceCategory lol = (PreferenceCategory) o;
 					//We do not use Cloude Interface, so remove it for now
-					boolean b = ( lol.getKey() != null && (lol.getKey().equals("prefCatCloud") || lol.getKey().equals("btPrefDatabaseScreen") ) );
+					boolean b = ( lol.getKey() != null && (lol.getKey().equals("prefCloudCategory") || lol.getKey().equals("prefLocalDatabaseCategory") ) );
 					if( b )
 						screen.removePreference(lol);
 					else
@@ -241,10 +264,16 @@ implements OnSharedPreferenceChangeListener
 		{
 			prefUseLocalFile.setChecked(!flag);
 			prefUseFTPServer.setChecked(flag);
-			if( btPrefFTPScreen != null )
-				btPrefFTPScreen.setEnabled( flag );
-			if( btPrefLocalFileScreen != null )
-				btPrefLocalFileScreen.setEnabled(!flag);
+			if( prefUseAzure != null )
+				prefUseAzure.setChecked(false);
+			updateStorageTitle();
+		}
+		public void setAzureServerIsActive(boolean flag)
+		{
+			prefUseFTPServer.setChecked(!flag);
+			prefUseLocalFile.setChecked(!flag);
+			if( prefUseAzure != null )
+				prefUseAzure.setChecked(flag);
 			updateStorageTitle();
 		}
 
@@ -284,18 +313,41 @@ implements OnSharedPreferenceChangeListener
 		                }
 
 		            });
+		            updateStorageTitle();
 	            }
+	            else if( pref.getKey().equals(KEY_USE_AZUREFILE) )
+	            {
+	            	this.prefUseAzure = (CheckBoxPreference) pref;
+		            pref.setOnPreferenceClickListener(new Preference.OnPreferenceClickListener(){
+
+		                @Override
+		                public boolean onPreferenceClick(Preference preference) {
+		                	setAzureServerIsActive( prefUseAzure.isChecked() );
+		                    return false;
+		                }
+
+		            });
+		            updateStorageTitle();
+	            }
+	            
 	        }
 		}
 		public void updateStorageTitle() {
 	        String ftpt = "FTP Einstellungen";
-	        if( prefUseFTPServer.isChecked() )
+	        if( prefUseFTPServer != null && prefUseFTPServer.isChecked() )
 	        	ftpt += ": Ja";
-	        btPrefFTPScreen.setTitle( ftpt );
+	        if( btPrefFTPScreen != null )
+	        	btPrefFTPScreen.setTitle( ftpt );
 	        String localFileTitle = "Lokale Datei Einstellungen";
 	        if( prefUseLocalFile.isChecked() )
 	        	localFileTitle += ": Ja";
 	        btPrefLocalFileScreen.setTitle(localFileTitle);
+	        
+	        String azureTitle = "Azure Einstellungen";
+	        if( prefUseAzure != null && prefUseAzure.isChecked() )
+	        	azureTitle += ": Ja";
+	        if( btPrefAzureFileScreen != null )
+	        	btPrefAzureFileScreen.setTitle(azureTitle);
 		}
 		
 
@@ -319,6 +371,11 @@ implements OnSharedPreferenceChangeListener
 		public void findAndReplaceTitle(SharedPreferences mySharedPreferences, String key) 
 		{
 			PreferenceManager pm = getPreferenceManager();
+			if( pm == null )
+			{
+				System.out.println("getPreferenceManager returns null for key " + key);
+				return;
+			}
 			Preference p = pm.findPreference(key);
 			findAndReplaceTitle( p, mySharedPreferences);
 		}		
@@ -390,6 +447,10 @@ implements OnSharedPreferenceChangeListener
 					
 			}
 			setFTPServerIsActive( ((CheckBoxPreference)pm.findPreference(KEY_USE_FTPSERVER)).isChecked() );
+			CheckBoxPreference cbpref =(CheckBoxPreference)pm.findPreference(KEY_USE_AZUREFILE);
+			if( cbpref != null)
+				setAzureServerIsActive( cbpref.isChecked() );
+			
 			return cnt;
 		}
 
@@ -476,6 +537,9 @@ implements OnSharedPreferenceChangeListener
 //	private String cloudBucket;
 
 	private boolean needChartReload;
+	private String azureAccount;
+	private String azureKey;
+	private String azureContainer;
 	
 	@Override 
 	public void onCreate(Bundle savedInstanceState) 
@@ -519,7 +583,11 @@ implements OnSharedPreferenceChangeListener
 			exportPrefsToFile();
 			return true;
 		}
-		
+		else if( id == R.id.action_settings_cancel )
+		{
+			finish();
+			return true;
+		}
 		return super.onOptionsItemSelected(item);
 	}
 	private void exportPrefsToFile() {
@@ -633,16 +701,21 @@ implements OnSharedPreferenceChangeListener
 		{
 			boolean isFtpActive = MainActivityGrid.getDataAccess().isFTPActive();
 			boolean isLocalFile = MainActivityGrid.getDataAccess().isLocalFileActive();
+			boolean isAzureActive = MainActivityGrid.getDataAccess().isAzureActive();
 			
 			setIfNotExists( mySharedPreferences, edit, KEY_LINK, MainActivityGrid.getDataAccess().getFtpLink() );
 			setIfNotExists( mySharedPreferences, edit, KEY_SUBFOLDER, MainActivityGrid.getDataAccess().getSubFolder() );
 			
 			setIfNotExists( mySharedPreferences, edit, KEY_FTPFILENAME, MainActivityGrid.getDataAccess().getFtpFileName() );
 			setIfNotExists( mySharedPreferences, edit, KEY_FILENAME, MainActivityGrid.getDataAccess().getBaseFileName() );
+
+			setIfNotExists( mySharedPreferences, edit, KEY_AZURE_ACCOUNT, MainActivityGrid.getDataAccess().getAzureAccount() );
+			setIfNotExists( mySharedPreferences, edit, KEY_AZURE_KEY, MainActivityGrid.getDataAccess().getAzureKey() );
+			setIfNotExists( mySharedPreferences, edit, KEY_AZURE_CONTAINER, MainActivityGrid.getDataAccess().getAzureContainer() );
 			
 			if( !MainActivityGrid.getDataAccess().getBaseFileName().equals(MainActivityGrid.getDataAccess().getFtpFileName()) )
 			{
-				if( isFtpActive )
+				if( isFtpActive && isAzureActive == false )
 				{
 					isFtpActive = false;
 					isLocalFile = true;
@@ -659,9 +732,17 @@ implements OnSharedPreferenceChangeListener
 			
 			edit.putBoolean(KEY_USE_FTPSERVER, isFtpActive );
 			edit.putBoolean(KEY_USE_LOCALFILE, isLocalFile );
+			edit.putBoolean(KEY_USE_AZUREFILE, isAzureActive );
+			
 		}
 		else
+		{
 			edit.putBoolean(KEY_USE_LOCALFILE, true );
+			edit.putBoolean(KEY_USE_AZUREFILE, false );
+			setIfNotExists( mySharedPreferences, edit, KEY_AZURE_ACCOUNT, DataAccessAzureAndroidController.DEFAULT_ACCOUNT );
+			setIfNotExists( mySharedPreferences, edit, KEY_AZURE_KEY, "" );
+			setIfNotExists( mySharedPreferences, edit, KEY_AZURE_CONTAINER, DataAccessAzureAndroidController.DEFAULT_CONTAINER );
+		}
 		
 		setIfNotExists( mySharedPreferences, edit, KEY_GEWICHT, "" + BloodPreasureAnalyze.getGewicht() );
 		setIfNotExists( mySharedPreferences, edit, KEY_GROESSE, "" + BloodPreasureAnalyze.getGroesse() );
@@ -692,11 +773,31 @@ implements OnSharedPreferenceChangeListener
 		}
 	}
 
+	@Override
 	public void onBackPressed()
+	{
+		super.onBackPressed();
+
+		SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
+		boolean useLocalFile = mySharedPreferences.getBoolean(KEY_USE_LOCALFILE, true);
+		if( useLocalFile )
+		{
+			FileChoosePreference pfn = (FileChoosePreference)preferenceFragment.getPreferenceManager().findPreference(KEY_FILENAME);
+			Editor edit = mySharedPreferences.edit();
+			edit.putString(KEY_FILENAME, pfn.getFileName());
+			edit.apply();
+			edit.commit();
+		}
+		MainActivityGrid.self.clearDataAccessObject();
+		BloodPreasurePreferenceActivity.initFileAccessData();
+		MainActivityGrid.self.reloadChart();
+	}
+	public void _onBackPressed()
 	{
 		boolean configured = isConfigured(PreferenceManager.getDefaultSharedPreferences(MainActivityGrid.self)); 
 		SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(this);
 		boolean useLocalFile = mySharedPreferences.getBoolean(KEY_USE_LOCALFILE, true);
+		boolean isAzureActive =mySharedPreferences.getBoolean(KEY_USE_AZUREFILE, false);
 		
 		FileChoosePreference pfn = (FileChoosePreference)preferenceFragment.getPreferenceManager().findPreference(KEY_FILENAME);
 		String fn = pfn.getFileName();
@@ -708,7 +809,7 @@ implements OnSharedPreferenceChangeListener
 			edit.apply();
 			edit.commit();
 		}
-		if( useLocalFile )
+		if( useLocalFile || isAzureActive)
 			filename = fn;
 		
 		if( needReload || !configured)
@@ -749,6 +850,12 @@ implements OnSharedPreferenceChangeListener
 				onSharedPreferenceChanged(mySharedPreferences, KEY_FTPPORT);
 			if( subFolder == null )
 				onSharedPreferenceChanged(mySharedPreferences, KEY_SUBFOLDER);
+			if( azureAccount == null )
+				onSharedPreferenceChanged(mySharedPreferences, KEY_AZURE_ACCOUNT);
+			if( azureKey == null )
+				onSharedPreferenceChanged(mySharedPreferences, KEY_AZURE_KEY);
+			if( azureContainer == null )
+				onSharedPreferenceChanged(mySharedPreferences, KEY_AZURE_CONTAINER);
 			
 			if( !configured )
 			{
@@ -765,11 +872,20 @@ implements OnSharedPreferenceChangeListener
 				editor.putString(KEY_SUBFOLDER, subFolder );
 				editor.commit();
 			}
-			if( !useLocalFile && !useFTPServer )
+			if( !useLocalFile && !useFTPServer && !isAzureActive)
 			{
-				useLocalFile = true;
 				Editor editor = mySharedPreferences.edit();
-				editor.putBoolean(KEY_USE_LOCALFILE, useFTPServer);
+				if( azureKey != null && !azureKey.isEmpty() )
+				{
+					isAzureActive = true;
+					editor.putBoolean(KEY_USE_AZUREFILE, isAzureActive);
+				}
+				else
+				{
+					useLocalFile = true;
+					editor.putBoolean(KEY_USE_LOCALFILE, useLocalFile);
+					editor.putString(KEY_AZURE_KEY, "");
+				}
 				editor.commit();
 			}
 			if( useLocalFile && useFTPServer )
@@ -777,6 +893,7 @@ implements OnSharedPreferenceChangeListener
 				useFTPServer = false;
 				Editor editor = mySharedPreferences.edit();
 				editor.putBoolean(KEY_USE_FTPSERVER, useFTPServer);
+				editor.putString(KEY_AZURE_KEY, "");
 				editor.commit();
 			}
 			
@@ -784,6 +901,18 @@ implements OnSharedPreferenceChangeListener
 			if( useLocalFile )
 			{
 				da = DataAccess.createInstance( this.filename );
+				try {
+					da.createIfNotExistsFile();
+				}
+				catch(Exception ex)
+				{
+					Toast.makeText(getApplicationContext(), ex.getMessage(), Toast.LENGTH_LONG).show();
+					return;
+				}
+			}
+			else if( isAzureActive )
+			{
+				da = DataAccessAndroid.createInstance( this.filename, this.azureAccount, this.azureKey, this.azureContainer );
 				try {
 					da.createIfNotExistsFile();
 				}
@@ -891,10 +1020,7 @@ implements OnSharedPreferenceChangeListener
 		}
 		if( key.equals(KEY_FILENAME) )
 		{
-			//FileChoosePreference pfn = (FileChoosePreference)preferenceFragment.getPreferenceManager().findPreference(KEY_FILENAME);
-//			String fn = pfn.getFileName();
-//			String fnlokal = sharedPreferences.getString(key, "xxx");
-			if( sharedPreferences.getBoolean(KEY_USE_LOCALFILE, false) )
+			if( sharedPreferences.getBoolean(KEY_USE_LOCALFILE, false) || sharedPreferences.getBoolean(KEY_USE_AZUREFILE, false) )
 			{
 				needReload = true;
 				this.filename = sharedPreferences.getString(KEY_FILENAME,
@@ -919,6 +1045,26 @@ implements OnSharedPreferenceChangeListener
 				MainActivityGrid.getDataAccess() == null ? BloodPreasure.DEFAULT_SUBFOLDER() :
 				MainActivityGrid.getDataAccess().getSubFolder() );
 			
+		}
+		if( key.equals(KEY_AZURE_ACCOUNT))
+		{
+			needReload = true;
+			this.azureAccount = sharedPreferences.getString(KEY_AZURE_ACCOUNT,
+				MainActivityGrid.getDataAccess() == null ? DataAccessAzureAndroidController.DEFAULT_ACCOUNT :
+				MainActivityGrid.getDataAccess().getAzureAccount() );
+			
+		}
+		if( key.equals(KEY_AZURE_KEY))
+		{
+			needReload = true;
+			this.azureKey = sharedPreferences.getString(KEY_AZURE_KEY,
+				MainActivityGrid.getDataAccess() == null ? "" : MainActivityGrid.getDataAccess().getAzureAccount() );
+		}
+		if( key.equals(KEY_AZURE_CONTAINER))
+		{
+			needReload = true;
+			this.azureContainer = sharedPreferences.getString(KEY_AZURE_CONTAINER,
+				MainActivityGrid.getDataAccess() == null ? DataAccessAzureAndroidController.DEFAULT_CONTAINER : MainActivityGrid.getDataAccess().getAzureAccount() );
 		}
 		
 		if( key.startsWith("pref_Print") )
@@ -1066,27 +1212,44 @@ implements OnSharedPreferenceChangeListener
 //			d.setHandler(MainActivityGrid.self);
 			
 			boolean useFTPServer = mySharedPreferences.getBoolean(KEY_USE_FTPSERVER, false);
+			boolean useAzureFile = mySharedPreferences.getBoolean(KEY_USE_AZUREFILE, false);
+			boolean useLocalFile = mySharedPreferences.getBoolean(KEY_USE_LOCALFILE, false);
 			
 			String fname = mySharedPreferences.getString(KEY_FILENAME, BloodPreasure.DEFAULT_FILENAME() );
 			String subFolder = "";
-			if( useFTPServer )
+			DataAccess d = null;
+			if( useAzureFile )
 			{
-				fname = mySharedPreferences.getString(KEY_FTPFILENAME, BloodPreasure.DEFAULT_FTP_FILENAME());
-				subFolder = mySharedPreferences.getString(KEY_SUBFOLDER, BloodPreasure.DEFAULT_SUBFOLDER() );
+				d = DataAccessAndroid.createInstance( fname, 
+						mySharedPreferences.getString(KEY_AZURE_ACCOUNT, DataAccessAzureAndroidController.DEFAULT_ACCOUNT),
+						mySharedPreferences.getString(KEY_AZURE_KEY, "" ),
+						mySharedPreferences.getString(KEY_AZURE_CONTAINER, DataAccessAzureAndroidController.DEFAULT_CONTAINER ) );
 			}
-			DataAccess d = DataAccess.createInstance( fname, 
-					mySharedPreferences.getString(KEY_USER, "" ), 
-					mySharedPreferences.getString(KEY_PWD, "" ), 
-					mySharedPreferences.getString(KEY_LINK, "" ), 
-					subFolder, //subpath, 
-					Integer.parseInt(mySharedPreferences.getString(KEY_FTPPORT, "" )), 
-					mySharedPreferences.getString(KEY_CLOUD_KEY, "" ), 
-					mySharedPreferences.getString(KEY_CLOUD_SEC, "" ), 
-					mySharedPreferences.getString(KEY_CLOUD_BUCKET, "" )
-					); 
-			
+			else
+			{
+				if( useFTPServer )
+				{
+					fname = mySharedPreferences.getString(KEY_FTPFILENAME, BloodPreasure.DEFAULT_FTP_FILENAME());
+					subFolder = mySharedPreferences.getString(KEY_SUBFOLDER, BloodPreasure.DEFAULT_SUBFOLDER() );
+	
+					d = DataAccess.createInstance( fname, 
+						mySharedPreferences.getString(KEY_USER, "" ), 
+						mySharedPreferences.getString(KEY_PWD, "" ), 
+						mySharedPreferences.getString(KEY_LINK, "" ), 
+						subFolder, //subpath, 
+						Integer.parseInt(mySharedPreferences.getString(KEY_FTPPORT, "" )), 
+						mySharedPreferences.getString(KEY_CLOUD_KEY, "" ), 
+						mySharedPreferences.getString(KEY_CLOUD_SEC, "" ), 
+						mySharedPreferences.getString(KEY_CLOUD_BUCKET, "" )
+						); 
+				}
+				else //if( useLocalFile )
+				{
+					d = new DataAccess(new DataAccessController(fname), DataAccess.eAccessType.LocalFile);
+				}
+				
+			}
 			MainActivityGrid.self.setDataAccessObject( d );
-
 			BloodPreasurePreferenceActivity.setBloodPreasureAnalyzeData(mySharedPreferences);
 			
 		}

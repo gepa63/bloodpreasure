@@ -61,6 +61,7 @@
     <string name="removeMed">Del</string>
     <string name="action_settingsmed_cancel">Abbruch</string>
     <string name="action_cache_as_datasource">Cache als Datenquelle speichern</string>
+    <string name="action_settings_cancel">Abbruch</string>
     
 
 </resources>

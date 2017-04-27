@@ -9,7 +9,7 @@ package at.gepa.bloodpreasure;
 
 public final class R {
     public static final class array {
-        public static final int genderList=0x7f090000;
+        public static final int genderList=0x7f050000;
     }
     public static final class attr {
         /** <p>Must be a reference to another resource, in the form "<code>@[+][<i>package</i>:]<i>type</i>:<i>name</i></code>"
@@ -108,32 +108,31 @@ containing a value of this type.
         public static final int visibleItems=0x7f010000;
     }
     public static final class color {
-        public static final int PowderBlue=0x7f050008;
-        public static final int black=0x7f050004;
-        public static final int blue=0x7f050000;
-        public static final int blue_transparent=0x7f050007;
-        public static final int green=0x7f050001;
-        public static final int grey=0x7f050005;
-        public static final int lightgrey=0x7f050006;
-        public static final int orange=0x7f050002;
-        public static final int white=0x7f050003;
+        public static final int PowderBlue=0x7f060008;
+        public static final int black=0x7f060004;
+        public static final int blue=0x7f060000;
+        public static final int blue_transparent=0x7f060007;
+        public static final int green=0x7f060001;
+        public static final int grey=0x7f060005;
+        public static final int lightgrey=0x7f060006;
+        public static final int orange=0x7f060002;
+        public static final int white=0x7f060003;
     }
     public static final class dimen {
         /**  Default screen margins, per the Android Design guidelines. 
- Default screen margins, per the Android Design guidelines. 
 
          Example customization of dimensions originally defined in res/values/dimens.xml
          (such as screen margins) for screens with more than 820dp of available width. This
          would include 7" and 10" devices in landscape (~960dp and ~1280dp respectively).
     
          */
-        public static final int activity_horizontal_margin=0x7f060000;
-        public static final int activity_vertical_margin=0x7f060001;
-        public static final int font_size=0x7f060003;
-        public static final int font_size_big=0x7f060005;
-        public static final int font_size_medium=0x7f060004;
-        public static final int font_size_small=0x7f060002;
-        public static final int font_size_verybig=0x7f060006;
+        public static final int activity_horizontal_margin=0x7f070000;
+        public static final int activity_vertical_margin=0x7f070001;
+        public static final int font_size=0x7f070002;
+        public static final int font_size_big=0x7f070004;
+        public static final int font_size_medium=0x7f070005;
+        public static final int font_size_small=0x7f070003;
+        public static final int font_size_verybig=0x7f070006;
     }
     public static final class drawable {
         public static final int button_style=0x7f020000;
@@ -172,21 +171,22 @@ containing a value of this type.
         public static final int BloodPreasureGrid=0x7f0b0051;
         public static final int SwipeRefreshLayoutChartId=0x7f0b004e;
         public static final int SwipeRefreshLayoutId=0x7f0b0050;
-        public static final int action_add_bloodpreasure_value=0x7f0b0063;
-        public static final int action_app_analyze=0x7f0b0067;
-        public static final int action_app_info=0x7f0b0065;
-        public static final int action_apply=0x7f0b0062;
-        public static final int action_backup_data=0x7f0b006a;
-        public static final int action_import_tensovalid=0x7f0b006c;
-        public static final int action_print=0x7f0b0069;
-        public static final int action_refresh=0x7f0b0068;
-        public static final int action_restore_data=0x7f0b006b;
-        public static final int action_save_bloodpreasures=0x7f0b0064;
-        public static final int action_settings=0x7f0b0066;
-        public static final int action_settings_imp=0x7f0b006e;
-        public static final int action_settings_save=0x7f0b006d;
-        public static final int action_settingsmed_add=0x7f0b006f;
-        public static final int action_settingsmed_cancel=0x7f0b0070;
+        public static final int action_add_bloodpreasure_value=0x7f0b0064;
+        public static final int action_app_analyze=0x7f0b0068;
+        public static final int action_app_info=0x7f0b0066;
+        public static final int action_apply=0x7f0b0063;
+        public static final int action_backup_data=0x7f0b006b;
+        public static final int action_import_tensovalid=0x7f0b006d;
+        public static final int action_print=0x7f0b006a;
+        public static final int action_refresh=0x7f0b0069;
+        public static final int action_restore_data=0x7f0b006c;
+        public static final int action_save_bloodpreasures=0x7f0b0065;
+        public static final int action_settings=0x7f0b0067;
+        public static final int action_settings_cancel=0x7f0b0070;
+        public static final int action_settings_imp=0x7f0b006f;
+        public static final int action_settings_save=0x7f0b006e;
+        public static final int action_settingsmed_add=0x7f0b0071;
+        public static final int action_settingsmed_cancel=0x7f0b0072;
         public static final int analyseTextId=0x7f0b0013;
         public static final int avgValues=0x7f0b0019;
         public static final int btApply=0x7f0b0023;
@@ -196,8 +196,10 @@ containing a value of this type.
         public static final int cbPrintBloodPreasureChart=0x7f0b0055;
         public static final int cbPrintBloodPreasureList=0x7f0b0052;
         public static final int cbPrintBloodPreasureListDetails=0x7f0b0053;
-        public static final int cbUseFTPServer=0x7f0b0060;
-        public static final int cbUseLocalFile=0x7f0b005f;
+        public static final int cbUseAzureFile=0x7f0b0060;
+        public static final int cbUseFTPServer=0x7f0b005f;
+        public static final int cbUseLocalDatabase=0x7f0b0061;
+        public static final int cbUseLocalFile=0x7f0b005e;
         public static final int cell_Date=0x7f0b0028;
         public static final int cell_Description=0x7f0b002d;
         public static final int cell_Diastolisch=0x7f0b002a;
@@ -208,7 +210,7 @@ containing a value of this type.
         public static final int cell_Tags=0x7f0b002c;
         public static final int cell_Text=0x7f0b0026;
         public static final int chartLayout=0x7f0b004d;
-        public static final int chkTag=0x7f0b005d;
+        public static final int chkTag=0x7f0b005c;
         public static final int container=0x7f0b0011;
         public static final int editMedicationId=0x7f0b0015;
         public static final int editTextDialogUserInput=0x7f0b005a;
@@ -220,7 +222,7 @@ containing a value of this type.
         public static final int export_import_labelFilenameId=0x7f0b0046;
         public static final int export_import_localFileId=0x7f0b0044;
         public static final int export_import_txtFilenameId=0x7f0b0047;
-        public static final int header=0x7f0b005c;
+        public static final int header=0x7f0b005b;
         public static final int img_avg_day=0x7f0b001c;
         public static final int img_avg_night=0x7f0b001a;
         public static final int import_txtTensovalPersonId=0x7f0b004b;
@@ -256,11 +258,10 @@ containing a value of this type.
         public static final int rb_TensovalImportId=0x7f0b0049;
         public static final int relLayoutButtonBarBottomId=0x7f0b0017;
         public static final int relLayoutButtonMedAddId=0x7f0b0034;
-        public static final int spinner=0x7f0b005b;
-        public static final int spinnerId=0x7f0b0061;
+        public static final int spinnerId=0x7f0b0062;
         public static final int spinnerMedType=0x7f0b003a;
         public static final int taglist=0x7f0b0022;
-        public static final int taglist_name=0x7f0b005e;
+        public static final int taglist_name=0x7f0b005d;
         public static final int tendenz_image=0x7f0b0020;
         public static final int textView1=0x7f0b0059;
         public static final int txDatum=0x7f0b0001;
@@ -308,9 +309,8 @@ containing a value of this type.
         public static final int print_config_fragment=0x7f030015;
         public static final int print_execute_fragment=0x7f030016;
         public static final int prompts=0x7f030017;
-        public static final int spinner=0x7f030018;
-        public static final int table_header=0x7f030019;
-        public static final int taglist_row=0x7f03001a;
+        public static final int table_header=0x7f030018;
+        public static final int taglist_row=0x7f030019;
     }
     public static final class menu {
         public static final int edit_menu=0x7f0a0000;
@@ -319,65 +319,64 @@ containing a value of this type.
         public static final int prefmed_menu=0x7f0a0003;
     }
     public static final class string {
-        public static final int Add=0x7f070004;
-        public static final int Apply=0x7f070013;
-        public static final int Save=0x7f07000e;
-        public static final int action_app_analyze=0x7f070028;
-        public static final int action_app_info=0x7f070027;
-        public static final int action_apply=0x7f070002;
-        public static final int action_backup_data=0x7f07001e;
-        public static final int action_cache_as_datasource=0x7f07003a;
-        public static final int action_import_tensoval=0x7f070020;
-        public static final int action_restore_data=0x7f07001f;
-        public static final int action_settings=0x7f070005;
-        public static final int action_settings_imp=0x7f07001d;
-        public static final int action_settings_save=0x7f07001c;
-        public static final int action_settingsmed_add=0x7f070037;
-        public static final int action_settingsmed_cancel=0x7f070039;
-        public static final int app_name=0x7f070000;
-        public static final int edit_name=0x7f070001;
-        public static final int headerDatum=0x7f07000f;
-        public static final int headerDiast=0x7f070011;
-        public static final int headerPuls=0x7f070012;
-        public static final int headerSyst=0x7f070010;
-        public static final int labelMedicationQuantityTaking=0x7f070036;
-        public static final int label_Datum=0x7f070007;
-        public static final int label_Description=0x7f07000d;
-        public static final int label_Diastolisch=0x7f07000b;
-        public static final int label_Filename=0x7f070026;
-        public static final int label_Puls=0x7f07000c;
-        public static final int label_Systolisch=0x7f07000a;
-        public static final int label_Tags=0x7f07001b;
-        public static final int label_TensovalPersonIndex=0x7f070029;
-        public static final int label_Uhrzeit=0x7f070009;
-        public static final int label_mmHg=0x7f070015;
-        public static final int medName=0x7f070032;
-        public static final int medQuantity=0x7f070035;
-        public static final int medShortName=0x7f070033;
-        public static final int medType=0x7f070034;
-        public static final int menu_del=0x7f070018;
-        public static final int menu_edit=0x7f070017;
-        public static final int menu_print=0x7f07002e;
-        public static final int menu_refresh=0x7f070019;
-        public static final int pick_time=0x7f070008;
-        public static final int removeMed=0x7f070038;
-        public static final int spin=0x7f070003;
-        public static final int taglistTitle=0x7f07001a;
-        public static final int threepoints=0x7f070016;
-        public static final int title_activity_blood_preasure_Export=0x7f070024;
-        public static final int title_activity_blood_preasure_Import=0x7f070025;
-        public static final int title_activity_blood_preasure_Print=0x7f07002d;
-        public static final int title_activity_blood_preasure_edit=0x7f070006;
-        public static final int title_activity_blood_preasure_info=0x7f070021;
-        public static final int title_activity_blood_preasure_settings=0x7f070014;
-        public static final int txtDeviceNameTensovalDuo=0x7f07002f;
-        public static final int txtDeviceOther=0x7f070030;
-        public static final int txtLocalFile=0x7f070022;
-        public static final int txtPrintBloodPreasureAnalyze=0x7f07002b;
-        public static final int txtPrintBloodPreasureChart=0x7f07002c;
-        public static final int txtPrintBloodPreasureList=0x7f07002a;
-        public static final int txtPrintBloodPreasureListDetails=0x7f070031;
-        public static final int txtUrl=0x7f070023;
+        public static final int Add=0x7f080001;
+        public static final int Apply=0x7f080010;
+        public static final int Save=0x7f08000b;
+        public static final int action_app_analyze=0x7f080026;
+        public static final int action_app_info=0x7f080025;
+        public static final int action_backup_data=0x7f08001c;
+        public static final int action_cache_as_datasource=0x7f080038;
+        public static final int action_import_tensoval=0x7f08001e;
+        public static final int action_restore_data=0x7f08001d;
+        public static final int action_settings=0x7f080002;
+        public static final int action_settings_cancel=0x7f080039;
+        public static final int action_settings_imp=0x7f08001b;
+        public static final int action_settings_save=0x7f08001a;
+        public static final int action_settingsmed_add=0x7f080035;
+        public static final int action_settingsmed_cancel=0x7f080037;
+        public static final int app_name=0x7f080000;
+        public static final int headerDatum=0x7f08000c;
+        public static final int headerDiast=0x7f08000e;
+        public static final int headerPuls=0x7f08000f;
+        public static final int headerSyst=0x7f08000d;
+        public static final int labelMedicationQuantityTaking=0x7f080034;
+        public static final int label_Datum=0x7f080004;
+        public static final int label_Description=0x7f08000a;
+        public static final int label_Diastolisch=0x7f080008;
+        public static final int label_Filename=0x7f080024;
+        public static final int label_Puls=0x7f080009;
+        public static final int label_Systolisch=0x7f080007;
+        public static final int label_Tags=0x7f080018;
+        public static final int label_TensovalPersonIndex=0x7f080027;
+        public static final int label_Uhrzeit=0x7f080006;
+        public static final int label_mmHg=0x7f080012;
+        public static final int medName=0x7f080030;
+        public static final int medQuantity=0x7f080033;
+        public static final int medShortName=0x7f080031;
+        public static final int medType=0x7f080032;
+        public static final int menu_del=0x7f080015;
+        public static final int menu_edit=0x7f080014;
+        public static final int menu_print=0x7f08002c;
+        public static final int menu_refresh=0x7f080016;
+        public static final int pick_time=0x7f080005;
+        public static final int removeMed=0x7f080036;
+        public static final int spin=0x7f080019;
+        public static final int taglistTitle=0x7f080017;
+        public static final int threepoints=0x7f080013;
+        public static final int title_activity_blood_preasure_Export=0x7f080022;
+        public static final int title_activity_blood_preasure_Import=0x7f080023;
+        public static final int title_activity_blood_preasure_Print=0x7f08002b;
+        public static final int title_activity_blood_preasure_edit=0x7f080003;
+        public static final int title_activity_blood_preasure_info=0x7f08001f;
+        public static final int title_activity_blood_preasure_settings=0x7f080011;
+        public static final int txtDeviceNameTensovalDuo=0x7f08002d;
+        public static final int txtDeviceOther=0x7f08002e;
+        public static final int txtLocalFile=0x7f080020;
+        public static final int txtPrintBloodPreasureAnalyze=0x7f080029;
+        public static final int txtPrintBloodPreasureChart=0x7f08002a;
+        public static final int txtPrintBloodPreasureList=0x7f080028;
+        public static final int txtPrintBloodPreasureListDetails=0x7f08002f;
+        public static final int txtUrl=0x7f080021;
     }
     public static final class style {
         /** 
@@ -400,57 +399,13 @@ containing a value of this type.
         res/values-v11/styles.xml on API 14+ devices.
     
  API 14 theme customizations can go here. 
-
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
-
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
- API 14 theme customizations can go here. 
-
-        Base application theme, dependent on API level. This theme is replaced
-        by AppBaseTheme from res/values-vXX/styles.xml on newer devices.
-    
-
-            Theme customizations available in newer API levels can go in
-            res/values-vXX/styles.xml, while customizations related to
-            backward-compatibility can go here.
-        
-
-        Base application theme for API 11+. This theme completely replaces
-        AppBaseTheme from res/values/styles.xml on API 11+ devices.
-    
- API 11 theme customizations can go here. 
-
-        Base application theme for API 14+. This theme completely replaces
-        AppBaseTheme from BOTH res/values/styles.xml and
-        res/values-v11/styles.xml on API 14+ devices.
-    
- API 14 theme customizations can go here. 
          */
-        public static final int AppBaseTheme=0x7f080000;
+        public static final int AppBaseTheme=0x7f090000;
         /**  Application theme. 
  All customizations that are NOT specific to a particular API-level can go here. 
- Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
- Application theme. 
- All customizations that are NOT specific to a particular API-level can go here. 
          */
-        public static final int AppTheme=0x7f080001;
-        public static final int button_text=0x7f080002;
+        public static final int AppTheme=0x7f090001;
+        public static final int button_text=0x7f090002;
     }
     public static final class xml {
         public static final int background=0x7f040000;

@@ -53,11 +53,8 @@ import at.gepa.net.IModel;
 
 public class MainActivityGrid extends FragmentActivity 
 implements 
-//IDropboxSessionHandler, 
 ITimeRoundListener, ICachedCallbackTaskListener
 {
-//	public static final boolean TENSOVAL_MODE = false;
-
 	
 	public static MainActivityGrid self;
 	public BloodPreasureListAdapter bloodPreasureAdapter;
@@ -586,6 +583,9 @@ ITimeRoundListener, ICachedCallbackTaskListener
 		return self.dataAccess;
 	}
 
+	public void clearDataAccessObject() {
+		dataAccess = null;
+	}
 	public void setDataAccessObject(DataAccess da) {
 		if( dataAccess != null )
 		{

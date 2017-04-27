@@ -85,7 +85,7 @@
 		<PreferenceCategory
 	    	android:title="Cloud Zugriff"
 	    	android:shouldDisableView="true"
-	    	android:key="prefCatCloud"
+	    	android:key="prefCloudCategory"
 	    	android:summary="Für den Zugriff auf Amazon S3/ Amazon CloudFront und Google Storage Service">
 	    	
 			<EditTextPreference 
@@ -111,14 +111,58 @@
 			    />
 	    </PreferenceCategory>
 	    
-	</PreferenceScreen>		
-
+	</PreferenceScreen>
+	
+	
+	<PreferenceScreen
+        android:key="btPrefAzureFileScreen"
+        android:title="Azure Einstellungen"
+        android:persistent="false">
+    	<PreferenceCategory
+		    android:title="Azure Datei"
+		    android:key="prefAzureFileCategory"
+	        android:persistent="false">
+	        
+	    	<CheckBoxPreference 
+			    android:key="prefUseAzureFile"
+			    android:id="@+id/cbUseAzureFile"
+			    android:title="Azure Datei verwenden"
+	    	    />
+	    	<EditTextPreference 
+		    	android:key="prefFilename"
+		    	android:title="Dateiname"
+		    	android:defaultValue="bloodvalues.csv"
+	    	    >
+	   		</EditTextPreference>
+	    	<EditTextPreference 
+		    	android:key="prefAzureAccount"
+		    	android:title="Account:"
+		    	android:defaultValue="bloodpreasure"
+	    	    >
+	    	</EditTextPreference>
+	    	<EditTextPreference 
+		    	android:key="prefAzureKey"
+		    	android:title="Key:"
+		    	android:defaultValue="0123456789"
+	    	    >
+	    	</EditTextPreference>
+	    	<EditTextPreference 
+		    	android:key="prefAzureContainer"
+		    	android:title="Container:"
+		    	android:defaultValue="bpshare"
+	    	    >
+	    	</EditTextPreference>
+		</PreferenceCategory>
+	</PreferenceScreen>	
+	
+	
 	<PreferenceScreen
         android:key="btPrefDatabaseScreen"
         android:title="Lokale Datenbank"
         android:persistent="false">
     	<PreferenceCategory
 		    android:title="Lokale Datenbank"
+		    android:key="prefLocalDatabaseCategory"
 	        android:persistent="false">
 	        
 	    	<CheckBoxPreference 
@@ -147,7 +191,8 @@
         android:key="btPrefChartConfig"
         android:title="Chart Konfiguration"
         android:persistent="false">
-	    <PreferenceCategory android:title="Chart Linien">
+	    <PreferenceCategory 
+	        android:title="Chart Linien">
 			<CheckBoxPreference 
 			    android:key="pref_PrintSystolisch"
 			    android:title="Systolische Werte anzeigen"

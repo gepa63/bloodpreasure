@@ -59,8 +59,15 @@ implements IBackgroundTask
     	String result = null;
     	
     	IModel model = context.getDownloadModel();
+    	try
+    	{
     	result = da[0].loadFile(this, model, model.getHeaderListener());
-    	
+    	}
+    	catch(Throwable t)
+    	{
+    		t.printStackTrace();
+    		result = t.getMessage();
+    	}
     	return result;
     }
 	public IModel getList() {

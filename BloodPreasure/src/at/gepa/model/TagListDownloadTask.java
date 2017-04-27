@@ -82,10 +82,11 @@ implements ITagsFileLoader
 		readCache();
 		
 		FileNameModel fnm = new FileNameModel(this.fileName);
-		
+		fnm.setIsLocalFile(true);
 		params = DataAccess.createInstance(fnm);
 		
-		super.execute(params);
+		if( params != null )
+			super.execute(params);
 	}
 	
 	public void saveCache() {

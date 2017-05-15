@@ -1,10 +1,8 @@
 package at.gepa.files;
 
 import java.io.File;
-import java.io.IOException;
 
 import android.content.Context;
-import at.gepa.net.FileStreamAccess;
 import at.gepa.net.IBackgroundTask;
 import at.gepa.net.IModel;
 

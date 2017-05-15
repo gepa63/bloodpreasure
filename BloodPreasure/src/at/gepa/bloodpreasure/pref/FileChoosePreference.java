@@ -14,7 +14,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 import at.gepa.bloodpreasure.MainActivityGrid;
 import at.gepa.files.CacheFile;
-import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
 
 public class FileChoosePreference extends Preference {

@@ -1,5 +1,8 @@
 package at.gepa.bloodpreasure;
 
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 
@@ -10,6 +13,7 @@ import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.res.Configuration;
 import android.os.Bundle;
+import android.os.Looper;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentActivity;
 import android.support.v4.view.ViewPager;
@@ -37,7 +41,6 @@ import at.gepa.bloodpreasure.ui.BloodPreasureInfoActivity;
 import at.gepa.bloodpreasure.ui.multipage.EditElementActivity;
 import at.gepa.bloodpreasure.ui.multipage.EditFragment;
 import at.gepa.files.CacheFile;
-import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
 import at.gepa.lib.model.BloodPreasureTags;
 import at.gepa.lib.model.ITimeRoundListener;
@@ -45,15 +48,18 @@ import at.gepa.lib.model.TensovalModel;
 import at.gepa.model.AvgValueHolder;
 import at.gepa.model.BloodPreasureModel;
 import at.gepa.model.TagListDownloadTask;
+import at.gepa.net.BloodPreasureStreamWriter;
 import at.gepa.net.DataAccess;
+import at.gepa.net.IAsyncResponseListener;
 import at.gepa.net.IElement;
 import at.gepa.net.IModel;
+import at.gepa.net.IWriteable;
 
 
 
 public class MainActivityGrid extends FragmentActivity 
 implements 
-ITimeRoundListener, ICachedCallbackTaskListener
+ITimeRoundListener, ICachedCallbackTaskListener, IAsyncResponseListener
 {
 	
 	public static MainActivityGrid self;
@@ -71,7 +77,6 @@ ITimeRoundListener, ICachedCallbackTaskListener
 	public long lastModified;
 	private ViewPager vpPager;
 	public EditElementActivity editElementActivity;
-	
 	
 	public MainActivityGrid()
 	{
@@ -335,6 +340,7 @@ ITimeRoundListener, ICachedCallbackTaskListener
 				ov.set( bp );
 				bloodPreasureAdapter.notifyDataSetInvalidated();
 			}
+			saveToAzureFunction( bp, position < 0 );
 			refreshList();
 		}		
 		if( saveWithUpload )
@@ -342,6 +348,7 @@ ITimeRoundListener, ICachedCallbackTaskListener
 			createUploadTask();
 		}
 	}
+
 	public void refreshList()
 	{
 		bloodPreasureAdapter.notifyDataSetChanged();
@@ -910,5 +917,34 @@ ITimeRoundListener, ICachedCallbackTaskListener
 		}
 		
 	}
+	private void saveToAzureFunction(BloodPreasure bp, boolean insert) {
+		String url = BloodPreasurePreferenceActivity.getAzureFunctionLink();
+		if( url.isEmpty() ) return;
+		
+		
+		BloodPreasureStreamWriter osw = new BloodPreasureStreamWriter( (IWriteable)bp);
+		try {
+			osw.write();
+			
+			String urlParameters = "{ \"bpValue\": \""+osw.toString()+"\", \"cmd\": \""+(insert ? "I" : "U")+"\" }";
+			
+			at.gepa.net.DataAccessAzureFunction.callFunction(url, urlParameters, this);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	
 
+	@Override
+	public void sendMessage(String message, int responseCode) {
+		if( message == null )
+		{
+			//init of run
+			Looper.prepare();
+			return;
+		}
+		Toast.makeText(getContext(), message, Toast.LENGTH_LONG).show();
+	}	
+	
 }

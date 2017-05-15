@@ -5,7 +5,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
-import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -99,6 +98,7 @@ implements OnSharedPreferenceChangeListener
 	private static final String KEY_MARKTAGSAS_UNTILREVOKE = "pref_MarkTagsAsUntilRevoke";
 	
 	public static final String TAG_DELIMITER = ";";
+	public static final String KEY_AZURE_FUNCTION = "prefFunktionLink";
 
 	public static class MyPreferenceFragment extends PreferenceFragment
 	{
@@ -108,6 +108,7 @@ implements OnSharedPreferenceChangeListener
 	    private PreferenceScreen btPrefFTPScreen;
 	    private PreferenceScreen btPrefAzureFileScreen;
 	    private PreferenceScreen btPrefLocalFileScreen;
+	    private PreferenceScreen btPrefAzureFunctionScreen;
 
 		private String [] setTextPrefs;
 		@Override
@@ -117,6 +118,7 @@ implements OnSharedPreferenceChangeListener
 	        
 	        setTextPrefs = new String []{ KEY_FILENAME, KEY_FTPFILENAME, KEY_SUBFOLDER,
 	        		KEY_AZURE_ACCOUNT, KEY_AZURE_KEY, KEY_AZURE_CONTAINER,
+	        		KEY_AZURE_FUNCTION,
 	        		KEY_FTPPORT, KEY_USER, KEY_GEWICHT, KEY_TAILE, KEY_HUEFTE, KEY_GROESSE, KEY_MEDICATION, KEY_PWD, KEY_LINK, KEY_GESCHLECHT, KEY_TENSOVAL_PERSON};
 	        
 	        try 
@@ -240,6 +242,9 @@ implements OnSharedPreferenceChangeListener
 				btPrefLocalFileScreen = screen;
 			else if( screen.getKey() != null && screen.getKey().equals("btPrefAzureFileScreen") )
 				btPrefAzureFileScreen = screen;
+			else if( screen.getKey() != null && screen.getKey().equals("btPrefAzureFunctionScreen") )
+				btPrefAzureFunctionScreen = screen;
+			
 			
 			for(int x = 0; x < screen.getPreferenceCount(); x++)
 			{
@@ -348,6 +353,9 @@ implements OnSharedPreferenceChangeListener
 	        	azureTitle += ": Ja";
 	        if( btPrefAzureFileScreen != null )
 	        	btPrefAzureFileScreen.setTitle(azureTitle);
+	        String azureFunctionTitle = "Azure Funktion-Link";
+	        if( btPrefAzureFunctionScreen != null )
+	        	btPrefAzureFunctionScreen.setTitle(azureFunctionTitle + ": ???");
 		}
 		
 
@@ -1466,5 +1474,11 @@ implements OnSharedPreferenceChangeListener
 		boolean ret = mySharedPreferences.getBoolean(KEY_MARKTAGSAS_UNTILREVOKE, false ); 
 		return ret;
 	}
-	
+	public static String getAzureFunctionLink() {
+		SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivityGrid.self);
+		String ret = mySharedPreferences.getString(KEY_AZURE_FUNCTION, "" );
+		if( ret == null )
+			ret = "";
+		return ret;
+	}
 }

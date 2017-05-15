@@ -20,6 +20,7 @@ import at.gepa.bloodpreasure.task.UploadTask;
 import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
 import at.gepa.net.DataAccess;
+import at.gepa.net.DataAccessAzureFunction;
 import at.gepa.net.FileNameModel;
 import at.gepa.net.IModel;
 
@@ -34,7 +35,8 @@ implements Serializable
 	public static enum eFileType
 	{
 		LocalFile,
-		Url
+		Url,
+		AzureFunction
 	}
 	public static enum eMode
 	{
@@ -95,6 +97,10 @@ implements Serializable
 	{
 		return getFile(fileType);
 	}
+	public boolean isAzureFunction()
+	{
+		return fileType == eFileType.AzureFunction;
+	}
 	public boolean isLocalFile()
 	{
 		return fileType == eFileType.LocalFile;
@@ -131,7 +137,12 @@ implements Serializable
 	public void save() {
 		try {
 			IModel m = MainActivityGrid.self.getUploadModel();
-			if( isLocalFile() )
+			if( isAzureFunction() )
+			{
+				DataAccessAzureFunction.callFunction( BloodPreasurePreferenceActivity.getAzureFunctionLink(), 
+						m, MainActivityGrid.self);
+			}
+			else if( isLocalFile() )
 			{				
 				File f = SystemInfo.getFileWithDefaultFolder( getFile(), SystemInfo.getApplicationName( MainActivityGrid.self ) );
 				if( f.isDirectory() )

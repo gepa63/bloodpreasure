@@ -11,6 +11,7 @@ import android.widget.RelativeLayout;
 import at.gepa.bloodpreasure.R;
 import at.gepa.bloodpreasure.exportimport.ExportImportData;
 import at.gepa.bloodpreasure.exportimport.IExportImportTypListener;
+import at.gepa.bloodpreasure.pref.BloodPreasurePreferenceActivity;
 
 public class FileTypeExportImportFragment extends ExportImportFragment {
 
@@ -37,6 +38,21 @@ public class FileTypeExportImportFragment extends ExportImportFragment {
 		else if( exportImportData.isUrl() )
 			rburl.setChecked(true);
 		
+		RadioButton rbaf = (RadioButton)rootView.findViewById(R.id.export_import_AzureFunctionId);
+		rbaf.setEnabled( !BloodPreasurePreferenceActivity.getAzureFunctionLink().isEmpty() );
+		rbaf.setOnCheckedChangeListener(new OnCheckedChangeListener() {
+			
+			@Override
+			public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+				if( isChecked )
+				{
+					exportImportTypListener.beforeTypeChanged( exportImportData, page, ExportImportData.eFileType.LocalFile );
+					exportImportData.setFileType( ExportImportData.eFileType.AzureFunction );
+					exportImportTypListener.typeChanged( exportImportData, page );
+				}
+			}
+		});
+		
 		rblf.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			
 			@Override
@@ -49,7 +65,6 @@ public class FileTypeExportImportFragment extends ExportImportFragment {
 				}
 			}
 		});
-		
 
 		rburl.setOnCheckedChangeListener(new OnCheckedChangeListener() {
 			

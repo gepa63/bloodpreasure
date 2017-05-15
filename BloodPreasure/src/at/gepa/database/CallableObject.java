@@ -1,7 +1,5 @@
 package at.gepa.database;
 
-import java.io.IOException;
-import java.io.OutputStreamWriter;
 import java.util.HashMap;
 
 import android.content.ContentValues;

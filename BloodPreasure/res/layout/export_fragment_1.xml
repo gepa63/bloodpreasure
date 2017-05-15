@@ -35,6 +35,14 @@
             android:textSize="32sp"
             android:layout_weight="1"
             android:text="@string/txtUrl" />
-    </RadioGroup>
+
+        <RadioButton
+            android:id="@+id/export_import_AzureFunctionId"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:textSize="32sp"
+            android:layout_weight="1"
+            android:text="@string/txtAzureFunction" />
+	</RadioGroup>
     
 </RelativeLayout>

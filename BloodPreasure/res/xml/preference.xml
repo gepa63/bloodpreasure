@@ -155,7 +155,29 @@
 		</PreferenceCategory>
 	</PreferenceScreen>	
 	
-	
+	<PreferenceScreen
+        android:key="btPrefAzureFunctionScreen"
+        android:title="Azure Funktion-Link"
+        android:persistent="false">
+    	<PreferenceCategory
+		    android:title="Azure Funktion-Link"
+		    android:key="prefAzureFunctionLinkCategory"
+	        android:persistent="false">
+	        
+	    	<EditTextPreference 
+		    	android:key="prefFunktionLink"
+		    	android:title="Link"
+		    	android:hint="http://'function-App'/azurewebsites.net/api/'functionname'?code="
+		    	android:defaultValue=""
+				android:gravity="top|left"             
+			    android:singleLine="false"
+			    android:lines="5"             
+			    android:inputType="textMultiLine"
+			    android:scrollHorizontally="false">
+	   		</EditTextPreference>
+		</PreferenceCategory>
+	</PreferenceScreen>	
+		
 	<PreferenceScreen
         android:key="btPrefDatabaseScreen"
         android:title="Lokale Datenbank"

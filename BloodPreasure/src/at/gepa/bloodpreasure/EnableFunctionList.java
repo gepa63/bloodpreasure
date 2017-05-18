@@ -26,11 +26,11 @@ public class EnableFunctionList {
 		buttons = new ArrayList<View>();
 		defAlphaBackground = -1;
 	}
-	public void add(MenuItem item) {
+	public void add(MenuItem item, boolean flag) {
 		if( !menuItems.contains(item) )
 		{
 			menuItems.add(item);
-			item.setEnabled(false);
+			item.setEnabled(flag);
 		}
 	}
 	public void add(View btId) {
@@ -49,6 +49,7 @@ public class EnableFunctionList {
 	{
 		for( MenuItem mi : menuItems )
 		{
+			String t = mi.getTitle().toString();
 			mi.setEnabled(flag);
 		}
 		for( View v : buttons )

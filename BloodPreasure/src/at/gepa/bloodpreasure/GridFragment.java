@@ -156,11 +156,12 @@ public class GridFragment extends Fragment {
 	{
 	    super.onCreateContextMenu(menu, v, menuInfo);
 
+	    boolean menuItemEnabled = (MainActivityGrid.self.getCurrentEditable() != null);
 	    MenuItem item = menu.add(0, CMD_EDIT, 0, R.string.menu_edit).setIcon(R.drawable.ic_launcher);
-		EnableFunctionList.getInstance().add( item );
+		EnableFunctionList.getInstance().add( item, menuItemEnabled );
 
 		item = menu.add(0, CMD_DEL, 10, R.string.menu_del);
-		EnableFunctionList.getInstance().add( item );
+		EnableFunctionList.getInstance().add( item, menuItemEnabled );
 		
 	    menu.add(1, CMD_REFRESH, 20, R.string.menu_refresh).setIcon(R.drawable.download);
 	    

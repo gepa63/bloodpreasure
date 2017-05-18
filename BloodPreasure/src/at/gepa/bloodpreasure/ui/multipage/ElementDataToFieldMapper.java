@@ -28,12 +28,14 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.TimePicker;
 import android.widget.TimePicker.OnTimeChangedListener;
+import android.widget.Toast;
 import antistatic.spinnerwheel.AbstractWheel;
 import antistatic.spinnerwheel.OnWheelChangedListener;
 import antistatic.spinnerwheel.OnWheelClickedListener;
 import antistatic.spinnerwheel.OnWheelScrollListener;
 import antistatic.spinnerwheel.WheelVerticalView;
 import antistatic.spinnerwheel.adapters.NumericWheelAdapter;
+import at.gepa.androidlib.ui.DialogMessageBox;
 import at.gepa.bloodpreasure.R;
 import at.gepa.bloodpreasure.analyze.BloodPreasureAnalyze;
 import at.gepa.bloodpreasure.medicine.DailyMedicationView;
@@ -177,22 +179,50 @@ public class ElementDataToFieldMapper {
 		
 		Button btTakeCurrentMed = new Button(ll.getContext());
 		btTakeCurrentMed.setBackground(shape);
-		btTakeCurrentMed.setText( "Aktuelle Medikation" );
+		btTakeCurrentMed.setText( "Aktuelle Medikation holen" );
 		btTakeCurrentMed.setGravity(Gravity.CENTER_HORIZONTAL);
 		btTakeCurrentMed.setOnClickListener(new OnClickListener() {
 			
 			@Override
 			public void onClick(View v) {
+				String medikation = BloodPreasureAnalyze.getMedication();
+				Medication med = Medication.createInstance(medikation);
+				if( med.isEmpty() )
+				{
+					if( !DialogMessageBox.askQquestion("Frage", "Die Medikation ist leer!\nTrotzdem übernehmen?", context ) )
+						return;
+				}
 				DailyMedicationView view = (DailyMedicationView)tv.getTag();
 				BloodPreasure bp = (BloodPreasure)element;
-				bp.setMedikation( BloodPreasureAnalyze.getMedication() );
+				bp.setMedikation( medikation );
 				bp.setChanged(true);
-				Medication med = Medication.createInstance(bp.getMedikation());
 				view.updateMedication(med);
-				
+				Toast.makeText(context, "Medikation gespeichert", Toast.LENGTH_LONG).show();
 			}
 		});
 		ll.addView(btTakeCurrentMed, ll.getChildCount());
+
+		Button btSetCurrentMed = new Button(ll.getContext());
+		btSetCurrentMed.setBackground(shape);
+		btSetCurrentMed.setText( "Als Aktuelle Medikation setzen" );
+		btSetCurrentMed.setGravity(Gravity.CENTER_HORIZONTAL);
+		btSetCurrentMed.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				BloodPreasure bp = (BloodPreasure)element;
+				String medikation = bp.getMedikation();
+				Medication med = Medication.createInstance(medikation);
+				if( med.isEmpty() )
+				{
+					if( !DialogMessageBox.askQquestion("Frage", "Die Medikation ist leer!\nTrotzdem setzen?", context ) )
+						return;
+				}
+				BloodPreasureAnalyze.setMedication(medikation);
+				Toast.makeText(context, "Medikation gespeichert", Toast.LENGTH_LONG).show();
+			}
+		});
+		ll.addView(btSetCurrentMed, ll.getChildCount());
 	}
 
 	private void addTextChangeListener() {

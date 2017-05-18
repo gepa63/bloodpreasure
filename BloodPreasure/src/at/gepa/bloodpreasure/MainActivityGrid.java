@@ -159,8 +159,6 @@ ITimeRoundListener, ICachedCallbackTaskListener, IAsyncResponseListener
 		
 		showOrHideAnalyzeFields();
 		
-		EnableFunctionList.getInstance().setEnabled(false);
-		
 		BloodPreasurePreferenceActivity.checkSettings();
 	}
 
@@ -169,8 +167,9 @@ ITimeRoundListener, ICachedCallbackTaskListener, IAsyncResponseListener
 	public boolean onCreateOptionsMenu(Menu menu) {
 		getMenuInflater().inflate(R.menu.main_activity_grid, menu);
 		
-		EnableFunctionList.getInstance().add( menu.getItem(0) );
-		EnableFunctionList.getInstance().add( menu.getItem(1) );
+		boolean menuItemEnabled = (getCurrentEditable()!= null);
+		EnableFunctionList.getInstance().add( menu.getItem(0), menuItemEnabled );
+		EnableFunctionList.getInstance().add( menu.getItem(1), menuItemEnabled );
 		
 		return true;
 	}

@@ -11,6 +11,16 @@
         android:orderInCategory="20"
         android:showAsAction="never"
         android:title="@string/action_settings_imp"/>
+    <item
+        android:id="@+id/action_settings_save2azure"
+        android:orderInCategory="10"
+        android:showAsAction="never"
+        android:title="@string/action_settings_save2azure"/>
+    <item
+        android:id="@+id/action_settings_impfromazure"
+        android:orderInCategory="20"
+        android:showAsAction="never"
+        android:title="@string/action_settings_impfromazure"/>
     
     <item
         android:id="@+id/action_settings_cancel"

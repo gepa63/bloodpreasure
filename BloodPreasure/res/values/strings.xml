@@ -63,6 +63,8 @@
     <string name="action_cache_as_datasource">Cache als Datenquelle speichern</string>
     <string name="action_settings_cancel">Abbruch</string>
     <string name="txtAzureFunction">Azure Funktion</string>
-    
+    <string name="action_settings_save2azure">Export nach Azure</string>
+    <string name="action_settings_impfromazure">Import von Azure</string>
+    <string name="title_activity_blood_preasure_multipage">Multipage</string>
 
 </resources>

@@ -1,10 +1,12 @@
 package at.gepa.bloodpreasure.pref;
 
 import java.io.File;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,6 +23,7 @@ import android.preference.PreferenceCategory;
 import android.preference.PreferenceFragment;
 import android.preference.PreferenceManager;
 import android.preference.PreferenceScreen;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Toast;
@@ -37,6 +40,8 @@ import at.gepa.bloodpreasure.exportimport.ExportImportData;
 import at.gepa.bloodpreasure.exportimport.ExportImportData.eFileType;
 import at.gepa.bloodpreasure.medicine.MedicationPreference;
 import at.gepa.bloodpreasure.print.PrintFragmentPagerAdapter.PrintConfig;
+import at.gepa.bloodpreasure.ui.multipage.EditElementActivity;
+import at.gepa.bloodpreasure.ui.multipage.MultipageActivity;
 import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
 import at.gepa.lib.tools.Util;
@@ -115,6 +120,7 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 	    private PreferenceScreen btPrefAzureFunctionScreen;
 
 		private String [] setTextPrefs;
+		
 		@Override
 	    public void onCreate(final Bundle savedInstanceState)
 	    {
@@ -570,6 +576,7 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 		}
 		catch(Throwable ex){
 			ex.printStackTrace();
+			sendMessage(ex.getMessage(), 0);
 		}
 	}
   
@@ -598,6 +605,11 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 		else if( id == R.id.action_settings_save2azure )
 		{
 			exportPrefsToAzure();
+			return true;
+		}
+		else if( id == R.id.action_settings_impfromazure )
+		{
+			importPrefsFromAzure();
 			return true;
 		}
 		else if( id == R.id.action_settings_cancel )
@@ -631,7 +643,8 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 					else
 						throw lfa.getLastError(); 
 				} catch (Exception e) {
-					Toast.makeText(MainActivityGrid.self, e.getMessage(), Toast.LENGTH_LONG).show();
+					//Toast.makeText(MainActivityGrid.self, e.getMessage(), Toast.LENGTH_LONG).show();
+					sendMessage(e.getMessage(), 0);
 				}
 				
 			}
@@ -672,7 +685,8 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 							msg = cnt + " Werte importiert!";
 							break;
 						}
-						Toast.makeText(MainActivityGrid.self, "Fertig - " + msg, Toast.LENGTH_LONG).show();
+						sendMessage("Fertig - " + msg, 0);
+						//Toast.makeText(MainActivityGrid.self, "Fertig - " + msg, Toast.LENGTH_LONG).show();
 						
 //						Thread thread = new Thread(new Runnable(){
 //
@@ -696,7 +710,8 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 					
 					MainActivityGrid.createDownloadTask();
 				} catch (Exception e) {
-					Toast.makeText(MainActivityGrid.self, e.getMessage(), Toast.LENGTH_LONG).show();
+					sendMessage(e.getMessage(), 0);
+					//Toast.makeText(MainActivityGrid.self, e.getMessage(), Toast.LENGTH_LONG).show();
 				}
 				
 			}
@@ -1296,7 +1311,6 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 	public static void initAnalyzeOnScreen()
 	{
 		setBloodPreasureAnalyzeData(null);
-		//SharedPreferences mySharedPreferences = PreferenceManager.getDefaultSharedPreferences(MainActivityGrid.self);
 		
 	}
 	public static void setBloodPreasureAnalyzeData( SharedPreferences mySharedPreferences) {
@@ -1507,24 +1521,39 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 			String url = "https://delegatebloodpreasurevalues.azurewebsites.net/api/SaveBloodPreasureSettings2DB?code=TabvaVDssh25t9b0moy4QwLTnGjQaPpQRFBQdrHAxClEcgcxmLP7wA==";
 			StringBuffer data = new StringBuffer(kvp.toKeyValueString());
 			
-			String rdata = Util.replaceAll( data, "\n", "~#~");
-			String jsonParam = "{\"settings\": \""+rdata+"\"}";
+			String rdata = URLEncoder.encode( data.toString(), "UTF-8" );
+			String jsonParam = "{\"settings\": \""+rdata + "\"}";
 			DataAccessAzureFunction.RequestTask rt = new DataAccessAzureFunction.RequestTask(url, jsonParam, this );
 			
 			rt.execute();	
 		}
 		catch(Exception ex )
 		{
+			ex.printStackTrace();
+			//Log.e("at.gepa.bloodpreasure", ex.getMessage());
 			sendMessage(ex.getMessage(), 0 );
 		}
+	}
+	private void importPrefsFromAzure() {
+		Intent i = new Intent(this, MultipageActivity.class);
+		try
+		{
+			startActivity(i);
+		}
+		catch(Exception ex)
+		{
+			ex.printStackTrace();
+			sendMessage(ex.getMessage(), 0);
+		}
+		
 	}
 
 	@Override
 	public void sendMessage(String message, int responseCode) {
-		if( message != null )
+		if( message == null )
 		{
-			DialogMessageBox.showMessage("BloodPreasure", message, this);
-			//Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+			return;
 		}
+		DialogMessageBox.sendBroadcastMessage( this, message );
 	}
 }

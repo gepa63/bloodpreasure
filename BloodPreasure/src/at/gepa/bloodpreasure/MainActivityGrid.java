@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
+import at.gepa.androidlib.ui.DialogMessageBox;
 import at.gepa.bloodpreasure.analyze.BloodPreasureAnalyze;
 import at.gepa.bloodpreasure.analyze.BloodPreasureAnalyzeActivity;
 import at.gepa.bloodpreasure.analyze.BloodPreasureAnalyzeEngine;
@@ -157,6 +158,8 @@ ITimeRoundListener, ICachedCallbackTaskListener, IAsyncResponseListener
 		showOrHideAnalyzeFields();
 		
 		BloodPreasurePreferenceActivity.checkSettings();
+		
+		//DialogMessageBox.sendBroadcastMessage(this, "so des is es jetzt" );
 	}
 
 	

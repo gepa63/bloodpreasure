@@ -6,9 +6,11 @@ import android.content.ComponentName;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.DialogInterface.OnClickListener;
+import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
+import android.os.Bundle;
 import android.text.InputType;
 import android.view.Gravity;
 import android.view.View;
@@ -222,5 +224,19 @@ public class DialogMessageBox
 			e.printStackTrace();
 		}
 		return ret;
+	}
+	
+	
+	public static void sendBroadcastMessage( Context context, String message )
+	{
+		Intent intent = new Intent();
+	    intent.setPackage(context.getPackageName());
+	    intent.setAction("showtoast");
+	    Bundle extra = new Bundle();
+	    if( message != null )
+	    	extra.putString("title", message);
+        intent.putExtras(extra);
+	    context.sendBroadcast(intent);
+
 	}
 }

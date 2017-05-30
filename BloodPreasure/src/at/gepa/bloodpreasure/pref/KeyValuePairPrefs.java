@@ -233,9 +233,9 @@ public class KeyValuePairPrefs {
 		{
 			IElement e = values.get(key);
 			if( !ret.isEmpty() )
-				ret += "&&&";
+				ret += "#}#";
 			KeyValue kv = (KeyValue)e;
-			ret += kv.toString("§§§");
+			ret += kv.toString("{#}");
 		}
 		return ret;
 	}
@@ -243,12 +243,12 @@ public class KeyValuePairPrefs {
 	public static KeyValuePairPrefs createInstancefromKeyValueString( String str )
 	{
 		KeyValuePairPrefs p = new KeyValuePairPrefs();
-		String [] keyValues = str.split("&&&");
+		String [] keyValues = str.split("#}#");
 		if( keyValues != null )
 		{
 			for( String ve : keyValues )
 			{
-				String [] kva = ve.split("§§§");
+				String [] kva = ve.split("{#}");
 				
 				p.add(kva[0], kva[1]);
 			}

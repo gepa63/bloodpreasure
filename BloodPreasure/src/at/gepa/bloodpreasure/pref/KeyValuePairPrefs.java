@@ -227,4 +227,32 @@ public class KeyValuePairPrefs {
 	public Collection<IElement> getValues() {
 		return values.values();
 	}
+	public String toKeyValueString() {
+		String ret = "";
+		for( String key : values.keySet() )
+		{
+			IElement e = values.get(key);
+			if( !ret.isEmpty() )
+				ret += "&&&";
+			KeyValue kv = (KeyValue)e;
+			ret += kv.toString("§§§");
+		}
+		return ret;
+	}
+	
+	public static KeyValuePairPrefs createInstancefromKeyValueString( String str )
+	{
+		KeyValuePairPrefs p = new KeyValuePairPrefs();
+		String [] keyValues = str.split("&&&");
+		if( keyValues != null )
+		{
+			for( String ve : keyValues )
+			{
+				String [] kva = ve.split("§§§");
+				
+				p.add(kva[0], kva[1]);
+			}
+		}
+		return p;
+	}
 }

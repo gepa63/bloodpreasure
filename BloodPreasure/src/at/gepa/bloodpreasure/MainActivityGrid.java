@@ -1,8 +1,5 @@
 package at.gepa.bloodpreasure;
 
-import java.io.IOException;
-import java.io.OutputStream;
-import java.io.OutputStreamWriter;
 import java.util.ArrayList;
 import java.util.Date;
 

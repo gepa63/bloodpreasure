@@ -26,7 +26,9 @@ import android.view.MenuItem;
 import android.widget.Toast;
 import at.azure.DataAccessAndroid;
 import at.azure.DataAccessAzureAndroidController;
+import at.gepa.androidlib.PhoneHelper;
 import at.gepa.androidlib.security.PasswordEncryptionDecryption;
+import at.gepa.androidlib.ui.DialogMessageBox;
 import at.gepa.bloodpreasure.ChartFragment;
 import at.gepa.bloodpreasure.MainActivityGrid;
 import at.gepa.bloodpreasure.R;
@@ -39,13 +41,15 @@ import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
 import at.gepa.lib.tools.Util;
 import at.gepa.net.DataAccess;
+import at.gepa.net.DataAccessAzureFunction;
 import at.gepa.net.DataAccessController;
+import at.gepa.net.IAsyncResponseListener;
 import at.gepa.net.IElement;
 
 
 
 public class BloodPreasurePreferenceActivity extends PreferenceActivity
-implements OnSharedPreferenceChangeListener
+implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 {
 	public static final String KEY_DATEFILTER = "dod";
 	public static final String KEY_LINK = "prefLink";
@@ -591,6 +595,11 @@ implements OnSharedPreferenceChangeListener
 			exportPrefsToFile();
 			return true;
 		}
+		else if( id == R.id.action_settings_save2azure )
+		{
+			exportPrefsToAzure();
+			return true;
+		}
 		else if( id == R.id.action_settings_cancel )
 		{
 			finish();
@@ -598,6 +607,7 @@ implements OnSharedPreferenceChangeListener
 		}
 		return super.onOptionsItemSelected(item);
 	}
+
 	private void exportPrefsToFile() {
 		final KeyValuePairPrefs kvp = new KeyValuePairPrefs();
 		exportKeyValuePairs(kvp);
@@ -1480,5 +1490,41 @@ implements OnSharedPreferenceChangeListener
 		if( ret == null )
 			ret = "";
 		return ret;
+	}
+
+
+	private void exportPrefsToAzure() {
+		try
+		{
+			final KeyValuePairPrefs kvp = new KeyValuePairPrefs();
+			exportKeyValuePairs(kvp);
+	
+			if( !PhoneHelper.isCorrectIMEI(MainActivityGrid.self) )
+			{
+				Toast.makeText(getBaseContext(), "Azure Funktion für Save-Settings fehlt - check IMEI!", Toast.LENGTH_LONG).show();
+				return;
+			}
+			String url = "https://delegatebloodpreasurevalues.azurewebsites.net/api/SaveBloodPreasureSettings2DB?code=TabvaVDssh25t9b0moy4QwLTnGjQaPpQRFBQdrHAxClEcgcxmLP7wA==";
+			StringBuffer data = new StringBuffer(kvp.toKeyValueString());
+			
+			String rdata = Util.replaceAll( data, "\n", "~#~");
+			String jsonParam = "{\"settings\": \""+rdata+"\"}";
+			DataAccessAzureFunction.RequestTask rt = new DataAccessAzureFunction.RequestTask(url, jsonParam, this );
+			
+			rt.execute();	
+		}
+		catch(Exception ex )
+		{
+			sendMessage(ex.getMessage(), 0 );
+		}
+	}
+
+	@Override
+	public void sendMessage(String message, int responseCode) {
+		if( message != null )
+		{
+			DialogMessageBox.showMessage("BloodPreasure", message, this);
+			//Toast.makeText(this, message, Toast.LENGTH_LONG).show();
+		}
 	}
 }

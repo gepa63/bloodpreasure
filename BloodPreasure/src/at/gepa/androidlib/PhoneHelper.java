@@ -230,4 +230,22 @@ public class PhoneHelper {
 		return list;
 	}
 	
+	private static String [] allowedIMEIs = new String[]{"352533076080625", "352533077080624"};
+	private static String [] IMEISV = new String[]{"78", "78"};
+	public static boolean isCorrectIMEI( Context context )
+	{
+		TelephonyInfo ti = TelephonyInfo.getInstance(context);
+		
+		for( String imeitest : allowedIMEIs )
+		{
+			if( imeitest.equals(ti.getImsiSIM1()) )
+				return true;
+			if( ti.isDualSIM() )
+			{
+				if( imeitest.equals(ti.getImsiSIM2()) )
+					return true;
+			}
+		}
+		return false;
+	}
 }

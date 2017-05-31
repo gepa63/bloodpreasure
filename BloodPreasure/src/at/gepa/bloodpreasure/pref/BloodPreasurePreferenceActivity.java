@@ -5,6 +5,7 @@ import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Calendar;
+import java.util.Collection;
 
 import android.app.Activity;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.content.SharedPreferences.Editor;
 import android.content.SharedPreferences.OnSharedPreferenceChangeListener;
 import android.os.Bundle;
 import android.os.Looper;
+import android.os.Parcelable;
 import android.preference.CheckBoxPreference;
 import android.preference.EditTextPreference;
 import android.preference.ListPreference;
@@ -41,6 +43,7 @@ import at.gepa.bloodpreasure.exportimport.ExportImportData.eFileType;
 import at.gepa.bloodpreasure.medicine.MedicationPreference;
 import at.gepa.bloodpreasure.print.PrintFragmentPagerAdapter.PrintConfig;
 import at.gepa.bloodpreasure.ui.multipage.EditElementActivity;
+import at.gepa.bloodpreasure.ui.multipage.KeyValuePairListAdapter;
 import at.gepa.bloodpreasure.ui.multipage.MultipageActivity;
 import at.gepa.files.LocalFileAccess;
 import at.gepa.lib.model.BloodPreasure;
@@ -106,8 +109,63 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 	private static final String KEY_PRINTCONFIG_LISTDETAIL = "pref_PrintConfig_ListDetails";
 	private static final String KEY_MARKTAGSAS_UNTILREVOKE = "pref_MarkTagsAsUntilRevoke";
 	
-	public static final String TAG_DELIMITER = ";";
 	public static final String KEY_AZURE_FUNCTION = "prefFunktionLink";
+	
+	//------------------- Short Keys
+	public static final String KEY_DATEFILTER_SHORT = "Chart-Datum";
+	public static final String KEY_LINK_SHORT = "Link";
+	public static final String KEY_SUBFOLDER_SHORT = "Folder";
+	public static final String KEY_FTPPORT_SHORT = "Port";
+	public static final String KEY_FTPFILENAME_SHORT = "Dateiname";
+	
+	public static final String KEY_CLOUD_KEY_SHORT = "Cloud-Key";
+	public static final String KEY_CLOUD_SEC_SHORT = "Cloud-Sec";
+	public static final String KEY_CLOUD_BUCKET_SHORT = "Cloud-Bucket";
+	
+	public static final String KEY_FILENAME_SHORT = "Dateiname";
+	public static final String KEY_USER_SHORT = "Benutzer";
+	public static final String KEY_PWD_SHORT = "PW";
+	
+	public static final String KEY_AZURE_ACCOUNT_SHORT = "Account";
+	public static final String KEY_AZURE_KEY_SHORT = "Azure-Key";
+	public static final String KEY_AZURE_CONTAINER_SHORT = "Azure-Daten";
+	
+	
+	public static final String KEY_BIRTHDAY_SHORT = "Birthday";
+	
+	public static final String KEY_ROUND_QUARTERS_SHORT = "An 4-tel ausrichten";
+	public static final String KEY_MEDICATION_SHORT = "Medikation";
+	public static final String KEY_TAGS_SHORT = "Tags";
+	public static final String KEY_SHOW_ANALYZE_SHORT = "Analyse";
+	public static final String KEY_TENSOVAL_PERSON_SHORT = "Tensoval";
+	
+	public static final String KEY_GEWICHT_SHORT = "Gewicht";
+	public static final String KEY_GROESSE_SHORT = "Groesse";
+	public static final String KEY_GESCHLECHT_SHORT = "Geschlecht";
+	public static final String KEY_TAILE_SHORT = "Taile";
+	public static final String KEY_HUEFTE_SHORT = "Hüfte";
+	
+	public static final String KEY_PRINT_CHART_SYSTOLISCH_SHORT = "SYST";
+	public static final String KEY_PRINT_CHART_DIASTOLISCH_SHORT = "DIA";
+	public static final String KEY_PRINT_CHART_PULS_SHORT = "Puls";
+	public static final String KEY_PRINT_CHART_GEWICHT_SHORT = "P-Gewicht";
+	public static final String KEY_PRINT_CHART_ZUCKER_SHORT = "P-Zucker";
+	public static final String KEY_PRINT_CHART_TEMP_SHORT = "P-Temp";
+	
+	public static final String KEY_USE_FTPSERVER_SHORT = "FTPServer";
+	public static final String KEY_USE_LOCALFILE_SHORT = "Lokale-Datei";
+	public static final String KEY_USE_AZUREFILE_SHORT = "Azure-Datei";
+	
+	private static final String KEY_PRINTCONFIG_ANALYZE_SHORT = "P-Analyse";
+	private static final String KEY_PRINTCONFIG_CHART_SHORT = "P-Config-Chart";
+	private static final String KEY_PRINTCONFIG_LIST_SHORT = "P-Config-List";
+	private static final String KEY_PRINTCONFIG_LISTDETAIL_SHORT = "P-Config-Details";
+	private static final String KEY_MARKTAGSAS_UNTILREVOKE_SHORT = "Tags-Bis-Wiederruf";
+	
+	public static final String KEY_AZURE_FUNCTION_SHORT = "Funktion";
+	
+	
+	public static final String TAG_DELIMITER = ";";
 
 	public static class MyPreferenceFragment extends PreferenceFragment
 	{
@@ -538,6 +596,14 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 		public void exportKeyValuePairs(KeyValuePairPrefs kvp) {
 			export( getPreferenceScreen(), kvp );
 		}
+
+//		public String getTitleFromKey(String key) {
+//			PreferenceManager pm = preferenceFragment.getPreferenceManager();
+//			Preference pref = pm.findPreference(key);
+//			if( pref == null )
+//				return key;
+//			return pref.getTitle().toString();
+//		}
 	}
 
 	
@@ -1534,11 +1600,18 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 			sendMessage(ex.getMessage(), 0 );
 		}
 	}
+	
+	
+	final static int REQUEST_CODE_SETTINGS_FROM_AZURE = 99;
 	private void importPrefsFromAzure() {
 		Intent i = new Intent(this, MultipageActivity.class);
 		try
 		{
-			startActivity(i);
+			KeyValuePairListAdapter.kvpCurrent = new KeyValuePairPrefs();
+			exportKeyValuePairs(KeyValuePairListAdapter.kvpCurrent);
+			
+			
+			startActivityForResult(i, REQUEST_CODE_SETTINGS_FROM_AZURE);
 		}
 		catch(Exception ex)
 		{
@@ -1548,6 +1621,28 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 		
 	}
 
+	protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        if (requestCode == REQUEST_CODE_SETTINGS_FROM_AZURE) 
+        {
+            if (resultCode == RESULT_OK) 
+            {
+            	String keyValueStream = data.getStringExtra("KeyValueStream");
+            	KeyValuePairPrefs kvp = KeyValuePairPrefs.createInstancefromKeyValueString(keyValueStream);
+
+            	if( kvp.equals(KeyValuePairListAdapter.kvpCurrent) )
+    			{
+    				sendMessage("Die Einstellungen sind identisch, der Import wird abgebrochen.", 0);
+    				return;
+    			}
+
+            	this.preferenceFragment.importKeyValuePairs(kvp);
+            	onBackPressed();
+            	finish();
+            }
+            return;
+        }
+        super.onActivityResult(requestCode, resultCode, data);
+    }	
 	@Override
 	public void sendMessage(String message, int responseCode) {
 		if( message == null )
@@ -1555,5 +1650,62 @@ implements OnSharedPreferenceChangeListener, IAsyncResponseListener
 			return;
 		}
 		DialogMessageBox.sendBroadcastMessage( this, message );
+	}
+
+
+	public static String getTitleFromKey(String key) 
+	{
+		if( KEY_DATEFILTER.equals( key ) ) return KEY_DATEFILTER_SHORT;
+		if( KEY_LINK.equals( key ) ) return KEY_LINK_SHORT;
+		if( KEY_SUBFOLDER.equals( key ) ) return KEY_SUBFOLDER_SHORT;
+		if( KEY_FTPPORT.equals( key ) ) return KEY_FTPPORT_SHORT;
+		if( KEY_FTPFILENAME.equals( key ) ) return KEY_FTPFILENAME_SHORT;
+			
+		if( KEY_CLOUD_KEY.equals( key ) ) return KEY_CLOUD_KEY_SHORT;
+		if( KEY_CLOUD_SEC.equals( key ) ) return KEY_CLOUD_SEC_SHORT;
+		if( KEY_CLOUD_BUCKET.equals( key ) ) return KEY_CLOUD_BUCKET_SHORT;
+			
+		if( KEY_FILENAME.equals( key ) ) return KEY_FILENAME_SHORT;
+		if( KEY_USER.equals( key ) ) return KEY_USER_SHORT;
+		if( KEY_PWD.equals( key ) ) return KEY_PWD_SHORT;
+			
+		if( KEY_AZURE_ACCOUNT.equals( key ) ) return KEY_AZURE_ACCOUNT_SHORT;
+		if( KEY_AZURE_KEY.equals( key ) ) return KEY_AZURE_KEY_SHORT;
+		if( KEY_AZURE_CONTAINER.equals( key ) ) return KEY_AZURE_CONTAINER_SHORT;
+		if( KEY_BIRTHDAY.equals( key ) ) return KEY_BIRTHDAY_SHORT;
+			
+		if( KEY_ROUND_QUARTERS.equals( key ) ) return KEY_ROUND_QUARTERS_SHORT;
+		if( KEY_MEDICATION.equals( key ) ) return KEY_MEDICATION_SHORT;
+		if( KEY_TAGS.equals( key ) ) return KEY_TAGS_SHORT;
+		if( KEY_SHOW_ANALYZE.equals( key ) ) return KEY_SHOW_ANALYZE_SHORT;
+		if( KEY_TENSOVAL_PERSON.equals( key ) ) return KEY_TENSOVAL_PERSON_SHORT;
+			
+		if( KEY_GEWICHT.equals( key ) ) return KEY_GEWICHT_SHORT;
+		if( KEY_GROESSE.equals( key ) ) return KEY_GROESSE_SHORT;
+		if( KEY_GESCHLECHT.equals( key ) ) return KEY_GESCHLECHT_SHORT;
+		if( KEY_TAILE.equals( key ) ) return KEY_TAILE_SHORT;
+		if( KEY_HUEFTE.equals( key ) ) return KEY_HUEFTE_SHORT;
+			
+		if( KEY_PRINT_CHART_SYSTOLISCH.equals( key ) ) return KEY_PRINT_CHART_SYSTOLISCH_SHORT;
+		if( KEY_PRINT_CHART_DIASTOLISCH.equals( key ) ) return KEY_PRINT_CHART_DIASTOLISCH_SHORT;
+		if( KEY_PRINT_CHART_PULS.equals( key ) ) return KEY_PRINT_CHART_PULS_SHORT;
+		if( KEY_PRINT_CHART_GEWICHT.equals( key ) ) return KEY_PRINT_CHART_GEWICHT_SHORT;
+		if( KEY_PRINT_CHART_ZUCKER.equals( key ) ) return KEY_PRINT_CHART_ZUCKER_SHORT;
+		if( KEY_PRINT_CHART_TEMP.equals( key ) ) return KEY_PRINT_CHART_TEMP_SHORT;
+			
+		if( KEY_USE_FTPSERVER.equals( key ) ) return KEY_USE_FTPSERVER_SHORT;
+		if( KEY_USE_LOCALFILE.equals( key ) ) return KEY_USE_LOCALFILE_SHORT;
+		if( KEY_USE_AZUREFILE.equals( key ) ) return KEY_USE_AZUREFILE_SHORT;
+			
+		if( KEY_PRINTCONFIG_ANALYZE.equals( key ) ) return KEY_PRINTCONFIG_ANALYZE_SHORT;
+		if( KEY_PRINTCONFIG_CHART.equals( key ) ) return KEY_PRINTCONFIG_CHART_SHORT;
+		if( KEY_PRINTCONFIG_LIST.equals( key ) ) return KEY_PRINTCONFIG_LIST_SHORT;
+		if( KEY_PRINTCONFIG_LISTDETAIL.equals( key ) ) return KEY_PRINTCONFIG_LISTDETAIL_SHORT;
+		if( KEY_MARKTAGSAS_UNTILREVOKE.equals( key ) ) return KEY_MARKTAGSAS_UNTILREVOKE_SHORT;
+			
+		if( KEY_AZURE_FUNCTION.equals( key ) ) return KEY_AZURE_FUNCTION_SHORT;
+		
+		return key;
+		
 	}
 }

@@ -4,11 +4,15 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.OutputStreamWriter;
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashMap;
 import java.util.List;
 
+import at.gepa.bloodpreasure.pref.KeyValuePairPrefs.KeyValue;
+import at.gepa.lib.tools.Util;
 import at.gepa.net.FileStreamAccess;
 import at.gepa.net.IElement;
 import at.gepa.net.IModel;
@@ -25,7 +29,25 @@ public class KeyValuePairPrefs {
 		public KeyValue( String key, String value )
 		{
 			this.key = key;
-			this.value = value;
+			if( value != null )
+				this.value = value.trim();
+			else
+				this.value = value;
+		}
+		
+		@Override
+		public boolean equals( Object o )
+		{
+			if( o instanceof KeyValue )
+			{
+				KeyValue kv = (KeyValue)o;
+				if( !kv.key.equals(key) ) return false;
+				if( kv.value == null && value == null ) return true;
+				if( kv.value != null && value == null ) return false;
+				if( kv.value == null && value != null ) return false;
+				return kv.value.equals(value);
+			}
+			return super.equals(o);
 		}
 		@Override
 		public void write(OutputStreamWriter writer, String delimField) throws IOException {
@@ -35,7 +57,7 @@ public class KeyValuePairPrefs {
 
 		private String toString(String delimField) 
 		{
-			return String.format("%s%s%s", key, delimField, value);
+			return String.format("%s%s%s", key, delimField, (value.isEmpty() ? " " : value) );
 		}
 		@Override
 		public boolean isChanged() {
@@ -71,7 +93,7 @@ public class KeyValuePairPrefs {
 			this.key = key;
 			if( o == null )
 				o = "";
-			this.value = o.toString();
+			this.value = o.toString().trim();
 			return o;
 		}
 
@@ -106,7 +128,29 @@ public class KeyValuePairPrefs {
 			ret.add(key);
 			return ret;
 		}
-		
+		public String toStringEncoded(String delimField) {
+			String evalue = "ERROR in ENCODING String";
+			try {
+				evalue = URLEncoder.encode( value, "UTF-8");
+			} catch (UnsupportedEncodingException e) {
+				e.printStackTrace();
+			}
+			return String.format("%s%s%s", key, delimField, (evalue.isEmpty() ? " " : evalue) );
+		}
+		public CharSequence getMappedValue() 
+		{
+			if( value == null ) return "";
+			
+			String ret = value;
+			if( ret.equals("false") ) ret = "Nein";
+			if( ret.equals("true") ) ret = "Ja";
+			if( ret.contains("§") ) ret = ret.replaceAll("§", "\n");
+			if( ret.contains("$") ) ret = ret.replaceAll("$", "\n");
+
+			if( key.equals(BloodPreasurePreferenceActivity.KEY_PWD) )
+				ret = "********";
+			return ret;
+		}
 	}
 	
 	private HashMap<String, IElement> values;
@@ -242,17 +286,77 @@ public class KeyValuePairPrefs {
 	
 	public static KeyValuePairPrefs createInstancefromKeyValueString( String str )
 	{
+		if( str.contains("{#}#}#") )
+		{
+			StringBuffer sb = new StringBuffer(str);
+			Util.replaceAll(sb, "{#}#}#", "{#} #}#" );
+			str = sb.toString();
+		}
 		KeyValuePairPrefs p = new KeyValuePairPrefs();
-		String [] keyValues = str.split("#}#");
+		String [] keyValues = str.split("#\\}#");
 		if( keyValues != null )
 		{
 			for( String ve : keyValues )
 			{
-				String [] kva = ve.split("{#}");
+				String [] kva = ve.split("\\{#\\}");
 				
-				p.add(kva[0], kva[1]);
+				if( kva.length > 1 )
+					p.add(kva[0], kva[1].trim() );
 			}
 		}
 		return p;
+	}
+	public List<IElement> getList() 
+	{
+		ArrayList<IElement> ret = new ArrayList<IElement>();
+		ret.addAll(values.values());
+		return ret;
+	}
+	
+	@Override
+	public boolean equals(Object o)
+	{
+		boolean ret = false;
+		if( o instanceof KeyValuePairPrefs )
+		{
+			KeyValuePairPrefs kvp = (KeyValuePairPrefs)o;
+
+			if( values.size() == kvp.values.size() )
+			{
+				if( keysExists( kvp.values ) )
+				{
+					if( kvp.keysExists( values ) )
+					{
+						for( String key : values.keySet() )
+						{
+							IElement e1 = values.get(key);
+							IElement e2 = kvp.values.get(key);
+							if( !e1.equals(e2) )
+								return ret;
+						}
+						ret = true;
+					}
+				}
+			}
+		}
+		else
+			ret = super.equals(o);
+		return ret;
+	}
+	private boolean keysExists(HashMap<String, IElement> v) 
+	{
+		for( String key : v.keySet() )
+		{
+			if( !values.containsKey(key) )
+				return false;
+		}
+		return true;
+	}
+	
+	public boolean contains(KeyValue kv) 
+	{
+		IElement e = values.get(kv.getKey());
+		if( e == null ) return false;
+		return e.equals(kv);
 	}
 }

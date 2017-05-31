@@ -24,7 +24,12 @@
         android:label="@string/app_name"
         android:theme="@style/AppTheme" android:description="@string/app_name">
         
-        
+		<receiver android:name="at.gepa.androidlib.ui.MessageReceiver" >
+	        <intent-filter >
+	            <action android:name="showtoast" />
+	        </intent-filter>
+	    </receiver>
+            
         <activity
             android:name="at.gepa.bloodpreasure.print.PrintFragmentActivity"
             android:label="@string/title_activity_blood_preasure_Print" >
@@ -67,6 +72,11 @@
 	        	<category android:name="android.intent.category.DEFAULT" />
 	      	</intent-filter>
 		</activity>      
+		
+        <activity
+            android:name="at.gepa.bloodpreasure.ui.multipage.MultipageActivity"
+            android:label="@string/title_activity_blood_preasure_multipage" >
+        </activity>
         <activity
             android:name="at.gepa.bloodpreasure.ui.multipage.EditElementActivity"
             android:label="@string/title_activity_blood_preasure_edit" >
